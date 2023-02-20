@@ -1,0 +1,150 @@
+    <!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Highcharts data from JSON Response</title>
+		<style>
+		body{
+			margin-top: 30px;
+			margin-left:40px;
+		}
+		</style>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>		
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/data.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js" integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=" crossorigin="anonymous"></script>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<style>
+.thetooltip {
+    border: 1px solid #2f7ed8;
+    background-color: #fff;
+    opacity: 0.8500000000000001;
+    padding: 4px 12px;
+    border-radius: 3px;
+    position: absolute;
+    top:100px;
+    box-shadow: 1px 1px 3px #666;
+}
+
+.tooltip {
+    display:none;
+    background: black;
+    font-size:12px;
+    height:10px;
+    width:80px;
+    padding:10px;
+    color:#fff; 
+    z-index: 99;
+    bottom: 10px;
+    border: 2px solid white;
+/* for IE */
+  filter:alpha(opacity=80);
+  /* CSS3 standard */
+  opacity:0.8;
+}
+</style>
+
+</head>
+<body>
+
+<div style="font-family: Arial,Helvetica,sans-serif; width: 800px; margin: 2em auto; padding: 1em; border: 1px solid red; border-radius: 0.5em; text-align: center;">Guardian IMS | Alert EXAMPLE</div>
+	
+<div id="container" style="min-width: 310px; height: 800px; margin: 0 auto"></div>
+
+<script>
+
+  
+Highcharts.setOptions({
+    time: {
+        useUTC: true
+    }
+});
+Highcharts.chart('container', {
+    chart: {
+        type: 'areaspline',
+		zoomType: 'x'
+    },
+    title: {
+        text: 'Alert Configuration'
+    },
+
+    subtitle: {
+        text: 'Understanding the Variables'
+    },
+    xAxis: {
+		title: {
+			text: 'Date/Time'
+		},
+		tickInterval: 900 * 1000,
+		plotBands: [{
+			color: 'orange', // Color value
+			from: 1406141100000, // Start of the plot band
+			to: 1406142000000 // End of the plot band
+		}],
+		plotLines: [{
+			value: 1406136070000,
+			color: '#FF8C00',
+			width: 1,
+			zIndex: 6,
+			dashStyle: 'dash'
+		}]
+    },
+    yAxis: {
+        title: {
+            text: 'values (unitless)'
+        },
+        min: 0.6,
+        plotLines: [{
+                value: 1.3,
+                color: '#7F0000',
+                width: 2,
+                zIndex: 3,
+                label: {
+					useHTML:true,
+                    text: '<div id="labelThresholdValue">threshold value  </div>',
+                    align: 'left',
+                    style: {
+                        color: '#000000'
+                    }
+                }
+            }, {
+				value: 1.2,
+                color: '#FF8C00',
+                width: 1,
+                zIndex: 3,
+				dashStyle: 'dash',
+                label: {
+					useHTML:true,
+                    text: '<div id="labelNotifyFrom">notify from (eg -0.1)  </div>',
+                    align: 'left',
+                    style: {
+                        color: '#000000'
+                    }
+                }
+            }
+        ]
+    },
+	legend: {
+		enabled: false
+	},
+    data: {
+        csvURL: 'sample_graph.csv',
+        enablePolling: false
+    }
+});
+
+ setTimeout(function(){ 
+	$('<i class="fa fa-question-circle" style="color:blue" title="test"></i>')
+	.insertAfter('#labelThresholdValue')
+	.tooltip()
+	.css('left', parseInt(left) + 24 + 'px');	
+ }, 1000);
+
+
+</script>
+   
+</body>
+</html>
