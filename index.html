@@ -131,10 +131,19 @@ Highcharts.chart('container', {
 		enabled: false
 	},
     data: {
-        csvURL: 'sample_graph.csv',
+        csvURL: 'localhost/Highcharts/sample_graph.csv',
         enablePolling: false
     }
 });
+
+
+ setTimeout(function(){ 
+	$('<i class="fa fa-question-circle" style="color:blue" title="test"></i>')
+	.insertAfter('#labelThresholdValue')
+	.tooltip()
+	.css('left', parseInt(left) + 24 + 'px');	
+ }, 1000);
+
 
 </script>
    
