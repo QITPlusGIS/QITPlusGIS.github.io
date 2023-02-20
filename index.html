@@ -1,15 +1,10 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="utf-8" />
-    <title>Highcharts data from JSON Response</title>
-		<style>
-		body{
-			margin-top: 30px;
-			margin-left:40px;
-		}
-		</style>
-	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>		
+<meta charset="utf-8" />
+<title>Alert Graph</title>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>		
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://code.highcharts.com/modules/data.js"></script>
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
@@ -18,6 +13,10 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
 <style>
+body {
+    margin-top: 30px;
+    margin-left:40px;
+}
 .thetooltip {
     border: 1px solid #2f7ed8;
     background-color: #fff;
@@ -40,23 +39,16 @@
     z-index: 99;
     bottom: 10px;
     border: 2px solid white;
-/* for IE */
-  filter:alpha(opacity=80);
-  /* CSS3 standard */
-  opacity:0.8;
+    opacity:0.8;
 }
 </style>
-
 </head>
 <body>
 
-<div style="font-family: Arial,Helvetica,sans-serif; width: 800px; margin: 2em auto; padding: 1em; border: 1px solid red; border-radius: 0.5em; text-align: center;">Guardian IMS | Alert EXAMPLE</div>
-	
+<div style="font-family: Arial,Helvetica,sans-serif; width: 800px; margin: 2em auto; padding: 1em; border: 1px solid red; border-radius: 0.5em; text-align: center;">Alert EXAMPLE</div>	
 <div id="container" style="min-width: 310px; height: 800px; margin: 0 auto"></div>
 
-<script>
-
-  
+<script> 
 Highcharts.setOptions({
     time: {
         useUTC: true
@@ -80,9 +72,9 @@ Highcharts.chart('container', {
 		},
 		tickInterval: 900 * 1000,
 		plotBands: [{
-			color: 'orange', // Color value
-			from: 1406141100000, // Start of the plot band
-			to: 1406142000000 // End of the plot band
+			color: 'orange', 
+			from: 1406141100000, 
+			to: 1406142000000 
 		}],
 		plotLines: [{
 			value: 1406136070000,
@@ -135,17 +127,6 @@ Highcharts.chart('container', {
         enablePolling: false
     }
 });
-
-
- setTimeout(function(){ 
-	$('<i class="fa fa-question-circle" style="color:blue" title="test"></i>')
-	.insertAfter('#labelThresholdValue')
-	.tooltip()
-	.css('left', parseInt(left) + 24 + 'px');	
- }, 1000);
-
-
 </script>
-   
 </body>
 </html>
