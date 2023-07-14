@@ -77,7 +77,7 @@ Tabs of bottom container:
 - **Zoom to** - zoom to gauge location
 
 ## Development - Technical Setup
-All source files required for this project are located in src directory. The project uses [ES modeules](https://developers.arcgis.com/javascript/latest/es-modules/) approach and as such you need to have some tool supporting it. Esri does recommend Vite for development with ArcGIS JS, especially for functionalities like very easy setup, hot reload and bundling the modules.
+All source files required for this project are located in src directory. The project uses [ES modules](https://developers.arcgis.com/javascript/latest/es-modules/) approach and as such you need to have some tool supporting it. Esri does recommend Vite for development with ArcGIS JS, especially for functionalities like very easy setup, hot reload and bundling the modules.
 
 [**Vite**](https://vitejs.dev/) is a local development server written by Evan You (the creator of Vue.js) and used by default by Vue and for React project templates. It has support for TypeScript and JSX. Some core functionalities:
 
@@ -103,7 +103,7 @@ All source files required for this project are located in src directory. The pro
 6. Run following commands:
     - `cd your-project-name`
     - `npm install`
-7. Arcgis JS and other packages
+7. ArcGIS JS and other packages
     - Add ArcGIS JS (ArcGIS Maps SDK for JavaScript) by running command `npm i @arcgis/core`
     - Add Chart.js `npm i chart.js`
     - Add pan/zoom plugin for charts `npm install chartjs-plugin-zoom`
