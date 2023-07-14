@@ -107,6 +107,6 @@ All source files required for this project are located in src directory. The pro
     - Add ArcGIS JS (ArcGIS Maps SDK for JavaScript) by running command `npm i @arcgis/core`
     - Add Chart.js `npm i chart.js`
     - Add pan/zoom plugin for charts `npm install chartjs-plugin-zoom`
-8. Copy the src folder of this repository into the folder (including simple config file for Vite - vite.config.js)
+8. Copy **content** of the src folder of this repository into the Vite root project folder (including config file for Vite - vite.config.js)
 9. Run following command: `npm run dev`
 10. Vite server should start, providing you a link - e.g. Local: http://localhost:5173/ - click the link / copy address to your browser to check it works. All done!
