@@ -2,6 +2,8 @@
 
 **Important: All texts and code are intelectual property of QIT Plus and can't be used without QIT Plus written permission.**
 
+The **map interface** is available at [QIT Plus - Time of Concentration](https://qitplusgis.github.io/toc).
+
 **Time of concentration** is a concept used in hydrology to measure the response of a watershed to a rain event. It is defined as the time needed for water to flow from the most remote point in a watershed to the watershed outlet. It is a function of the topography, geology, and land use within the watershed. A number of methods can be used to calculate time of concentration.
 
 Time of concentration is useful in predicting flow rates that would result from hypothetical storms, which are based on statistically derived return periods through **IDF curves**.
@@ -12,9 +14,9 @@ This project compares 3 methods with existing values provided by JBP to allow QI
 - [Process to implement methods](#process-to-implement-methods)
 - [Presenting results](#presenting-results)
 - [Map functionalities](#map-functionalities)
-- [WebMap Technical Setup](#webmap-technical-setup)
+- [Development - Technical Setup](#development---technical-setup)
 
-The map interface is available at [QIT Plus - Time of Concentration WebMap](TODO: add link here)
+
 
 ## Methods used
 1. **Kirpich** - The Kirpich Formula is used to estimate the time of concentration used in surface runoff design. The Kirpich equation was developed in 1940 from a study of 7 small (1.25 acres – 112 acres) rural catchments in Tennessee with well-defined channels and steep slopes (3%-10%).
@@ -29,14 +31,14 @@ The map interface is available at [QIT Plus - Time of Concentration WebMap](TODO
 ## Process to implement methods
 Preferred tool to implement methods was [ArcGIS Pro](https://pro.arcgis.com/). It did very good job at starting steps of processing **Digital Elevation Model** needed as core dataset. But it ended up with extremely complicated inefficient way with no geo-processing tools (including scripts) available for extracting the **Longest Flow Path** needed as input for TOC methods, making this tool hardly usable for scalable automated process.
 
-Some time was spent with [SAGA](https://saga-gis.sourceforge.io/) which provides extensive automated geoscientific analysis tools including hydrology. But the most efficient way to automate process turned out to be using [QGIS](https://qgis.org/) in combination with [GRASS GIS](https://grass.osgeo.org/).
+Some time was spent with [SAGA](https://saga-gis.sourceforge.io/) which provides extensive automated geoscientific analysis tools including hydrology, and does provide python wrapping around tools to relatively seamlessly **integrate into ArcGIS Pro** as toolbox. But the most efficient way to automate process turned out to be using [QGIS](https://qgis.org/) in combination with [GRASS GIS](https://grass.osgeo.org/).
 
 QGIS similarly as ArcGIS Pro excel at gis datasets and layers handling and provides large number of GIS analysis tools. It was used for handling initial DEM datasets, stitching together [The Digital Elevation Model (DEM) 5 Metre Grid of Australia](https://pid.geoscience.gov.au/dataset/ga/89644) with [SRTM-derived 1 Second Digital Elevation Model](https://pid.geoscience.gov.au/dataset/ga/72759) to cover whole evaluation area (high resolution [DEM coverage](https://elevation.fsdf.org.au/) is still sparse across QLD). From there GRASS was used to generate sub-watershed areas, importantly longest flow paths and all other calculations for rainfall gauges extracted from [Guardian IMS](https://live.guardianims.com/) for about 115 test sites, with about 50 TOC values provided by [JBP](https://jbpacific.com.au/).
 
 ### DEM to Drainage Direction and Flow Accumulation
 After pre-processing DEM to cover whole test area (watersheds) in QGIS the Drainage Direction and Flow Accumulation was calculated using [r.watershed](https://grass.osgeo.org/grass82/manuals/r.watershed.html).
 
-The following is done via python script (grass/toc.py) which does all the rest required to calculate values for TOC methods. It is to be run from within GRASS simple Python editor.
+The following is done via python script (provided in grass/toc.py) which does all the rest required to calculate values for TOC methods. It is to be run from within GRASS simple Python editor.
 
 ## Presenting results
 Early in the process it was identified that generating PDFs with over 100 maps (one for each Gauge site) to analyse and discuss results is extremely cumbersome. Taking into account QIT Plus wants to start using ArcGIS JS for online map interface such example interface was built for this project.
@@ -44,7 +46,7 @@ Early in the process it was identified that generating PDFs with over 100 maps (
 ### Map interface
 Map interface was built on [**ArcGIS JS**](https://developers.arcgis.com/javascript/latest/) using modular approach - [ArcGIS JS - ES modules](https://developers.arcgis.com/javascript/latest/es-modules/) as the currently best standardized module system for working with JavaScript and ArcGIS JS.
 
-The map interface is available at [QIT Plus - Time of Concentration WebMap](TODO: add link here)
+The **map interface** is available at [QIT Plus - Time of Concentration](https://qitplusgis.github.io/toc).
 
 ## Map functionalities
 
@@ -74,8 +76,8 @@ Tabs of bottom container:
 - **Show subwatershed** - show the subwatershed for the selected gauge (gauge being outlet) including the longest flow path and it's elevation profile. This action is not available if the gauge was excluded from calculations - e.g. location directly on the ridge.
 - **Zoom to** - zoom to gauge location
 
-## WebMap Technical Setup
-All source files required for this project are located in src directory. The project uses ESM approach and as such you need to some tool supporting it. Esri does recommend Vite for development with ArcGIS JS, especially for functionalities like very easy setup, hot reload and bundling the modules.
+## Development - Technical Setup
+All source files required for this project are located in src directory. The project uses [ES modeules](https://developers.arcgis.com/javascript/latest/es-modules/) approach and as such you need to have some tool supporting it. Esri does recommend Vite for development with ArcGIS JS, especially for functionalities like very easy setup, hot reload and bundling the modules.
 
 [**Vite**](https://vitejs.dev/) is a local development server written by Evan You (the creator of Vue.js) and used by default by Vue and for React project templates. It has support for TypeScript and JSX. Some core functionalities:
 
