@@ -1,6 +1,6 @@
 # QIT Plus - Time of Concentration
 
-**Important: All texts and code are intelectual property of QIT Plus and can't be used without QIT Plus written permission.**
+**Important: All texts, code and files in this repository are intellectual property of QIT Plus and can't be used without QIT Plus written permission.**
 
 The **map interface** is available at [QIT Plus - Time of Concentration](https://qitplusgis.github.io/toc).
 
