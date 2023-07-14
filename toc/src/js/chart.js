@@ -334,7 +334,6 @@ const toggleTocBubbleChart = (app) => {
     let mode = app.charts.tocBubbleData.mode;
     // Change mode between 0,1,2
     mode = mode + 1 == 4 ? 0 : mode + 1;
-    console.log(mode);
     app.charts.tocBubbleData.mode = mode;
     for (const ds of chart.data.datasets) {
         for (let i = 0; i < lfp_len.length; i++) {

@@ -1,1 +1,0 @@
-import{aO as n}from"./index-797c09f0.js";function s(o,f,e){if(!e||!e.features||!e.hasZ)return;const t=n(e.geometryType,f,o.outSpatialReference);if(t!=null)for(const a of e.features)t(a.geometry)}export{s as t};
