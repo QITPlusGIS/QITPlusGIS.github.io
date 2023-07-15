@@ -9,16 +9,17 @@ export const addLayers = (app, arcgis) => {
     app.layers = {};
 
     // Subwatersheds for gauges
-    app.layers.sws = getSwsLayer(arcgis.GeoJSONLayer);
+    app.layers.sws = getSwsLayer(arcgis.GeoJSONLayer, './gis/sws.json');
     // Gold Coast administrative boundaries
-    app.layers.ab = getAbLayer(arcgis.GeoJSONLayer);
+    app.layers.ab = getAbLayer(arcgis.GeoJSONLayer, './gis/ab.json');
     // Longest flow paths for gauges
-    app.layers.lfps = getLfpsLayer(arcgis.GeoJSONLayer);
+    app.layers.lfps = getLfpsLayer(arcgis.GeoJSONLayer, './gis/lfps.json');
     // Gauges relocation
-    app.layers.rgRelocation = getRgRelocationLayer(arcgis.GeoJSONLayer);
+    app.layers.rgRelocation = getRgRelocationLayer(arcgis.GeoJSONLayer, './gis/rg-relocation.json');
     // Gauges
     app.layers.rgToc = getRgTocLayer(
         arcgis.GeoJSONLayer,
+        './gis/rg-toc.json',
         arcgis.LabelClass,
         app.tocColors
     );
@@ -34,7 +35,7 @@ export const addLayers = (app, arcgis) => {
     map.add(app.layers.rgToc);
 };
 
-const getSwsLayer = (GeoJSONLayer) => {
+const getSwsLayer = (GeoJSONLayer, url) => {
     const renderer = {
         type: 'simple',
         symbol: {
@@ -50,7 +51,7 @@ const getSwsLayer = (GeoJSONLayer) => {
     const layer = new GeoJSONLayer({
         id: 'sws',
         title: 'Subwatershed',
-        url: './gis/sws.json',
+        url: url,
         displayField: 'code',
         objectIdField: 'code',
         outFields: ['*'],
@@ -63,7 +64,7 @@ const getSwsLayer = (GeoJSONLayer) => {
     return layer;
 };
 
-const getAbLayer = (GeoJSONLayer) => {
+const getAbLayer = (GeoJSONLayer, url) => {
     const renderer = {
         type: 'simple',
         symbol: {
@@ -80,7 +81,7 @@ const getAbLayer = (GeoJSONLayer) => {
     const layer = new GeoJSONLayer({
         id: 'ab',
         title: 'Gold Coast City Administrative Boundary',
-        url: './gis/ab.json',
+        url: url,
         displayField: 'lga_name',
         objectIdField: 'fid',
         renderer: renderer,
@@ -90,7 +91,7 @@ const getAbLayer = (GeoJSONLayer) => {
     return layer;
 };
 
-const getLfpsLayer = (GeoJSONLayer) => {
+const getLfpsLayer = (GeoJSONLayer, url) => {
     const renderer = {
         type: 'simple',
         symbol: {
@@ -104,7 +105,7 @@ const getLfpsLayer = (GeoJSONLayer) => {
     const layer = new GeoJSONLayer({
         id: 'lfps',
         title: 'Longest Flow Path',
-        url: './gis/lfps.json',
+        url: url,
         displayField: 'code',
         objectIdField: 'code',
         outFields: ['*'],
@@ -116,7 +117,7 @@ const getLfpsLayer = (GeoJSONLayer) => {
     return layer;
 };
 
-const getRgRelocationLayer = (GeoJSONLayer) => {
+const getRgRelocationLayer = (GeoJSONLayer, url) => {
     const renderer = {
         type: 'simple',
         symbol: {
@@ -129,7 +130,7 @@ const getRgRelocationLayer = (GeoJSONLayer) => {
     const layer = new GeoJSONLayer({
         id: 'rg-relocation',
         title: 'Rainfall Gauge Relocation',
-        url: './gis/rg-relocation.json',
+        url: url,
         displayField: 'code',
         objectIdField: 'code',
         outFields: ['*'],
@@ -139,7 +140,7 @@ const getRgRelocationLayer = (GeoJSONLayer) => {
     return layer;
 };
 
-const getRgTocLayer = (GeoJSONLayer, LabelClass, tocColors) => {
+const getRgTocLayer = (GeoJSONLayer, url, LabelClass, tocColors) => {
     const renderer = {
         type: 'pie-chart',
         holePercentage: 0.3,
@@ -193,7 +194,7 @@ const getRgTocLayer = (GeoJSONLayer, LabelClass, tocColors) => {
     const layer = new GeoJSONLayer({
         id: 'rgToc',
         title: 'Rainfall Gauge - Time of Concentration',
-        url: './gis/rg-toc.json',
+        url: url,
         displayField: 'code',
         objectIdField: 'fid',
         outFields: ['*'],

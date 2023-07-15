@@ -2,21 +2,21 @@
  *QIT Plus - Time of concentration map interface
  */
 
-// Import ArcGIS CSS and modules
+// ArcGIS CSS
 import '@arcgis/core/assets/esri/themes/light/main.css';
-
-// Import main css
+// QIT Plus CSS
 import '../css/main.css';
 // Set title and logo
 const title = 'QIT Plus - Time of Concentration';
-const logoUrl = '';
+import defaultLogo from '../img/qit-plus-logo.png';
+const logo = '';
 
 // Add main html content
 import * as htmlContent from './html-content.js';
 htmlContent.addTitle(title);
-htmlContent.addTitleDiv(title, logoUrl);
-htmlContent.addViewDiv();
+htmlContent.addTitleDiv(title, defaultLogo, logo);
 htmlContent.addLoaderDiv();
+htmlContent.addViewDiv();
 
 // Main object for the app for referencing
 import { App } from './app.js';

@@ -110,3 +110,4 @@ All source files required for this project are located in src directory. The pro
 8. Copy **content** of the src folder of this repository into the Vite root project folder (including config file for Vite - vite.config.js)
 9. Run following command: `npm run dev`
 10. Vite server should start, providing you a link - e.g. Local: http://localhost:5173/ - click the link / copy address to your browser to check it works. All done!
+11. To make your own new build after some changes to js/css/html run `npm run build` - does create / overwrite dist directory with files ready to deploy

@@ -6,7 +6,7 @@ export default defineConfig({
     build: {
         rollupOptions: {
           output: {
-            // Remove underscore as GitHub does not like it
+            // Remove underscore as GitHub does not like it, and put js into js subfolder
             entryFileNames: 'assets/js/[name]-[hash].js',
             chunkFileNames: ({name}) => {
                 if (/^_/.test(name ?? '')) {
