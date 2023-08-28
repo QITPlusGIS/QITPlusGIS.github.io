@@ -2,10 +2,10 @@
 @import 'esri.css';
 
 :root {
-    --qitp-primary-color: rgb(27,45,107);
-    --qitp-secondary-color: rgb(244,132,32);
-    --qitp-tertiary-color: rgb(255,255,255);
-    --qitp-quaternary-color: rgb(50,50,50);
+    --qitp-primary-color: rgb(27, 45, 107);
+    --qitp-secondary-color: rgb(244, 132, 32);
+    --qitp-tertiary-color: rgb(255, 255, 255);
+    --qitp-quaternary-color: rgb(50, 50, 50);
 }
 
 html,
@@ -26,7 +26,11 @@ body,
     width: 100%;
     height: 50px;
     justify-content: space-between;
-    background-color: color-mix(in srgb, var(--qitp-tertiary-color) 90%, transparent);
+    background-color: color-mix(
+        in srgb,
+        var(--qitp-tertiary-color) 90%,
+        transparent
+    );
     color: var(--qitp-blue);
     border-bottom: 1px solid var(--qitp-tertiary-color);
 }
@@ -44,6 +48,89 @@ body,
     vertical-align: middle;
     filter: drop-shadow(0px 0px 4px var(--qitp-tertiary-color));
 }
+button, a, a:visited {
+    border: none;
+    color: var(--qitp-primary-color);
+    background-color: var(--qitp-tertiary-color);
+}
+button:hover, a {
+    color: var(--qitp-secondary-color);
+    cursor: pointer;
+}
+#menuButtonDiv {
+    display: flex;
+    align-items: center;
+}
+#menuButton {
+    font-size: 24px;
+    margin-right: 20px;
+    min-width: 120px;
+    text-transform: uppercase;
+}
+#menuButton calcite-icon {
+    vertical-align: top;
+}
+#menuItemsContainer {
+    display: none;
+    position: absolute;
+    left: 0px;
+    top: 50px;
+    width: 100%;
+    height: calc(100% - 50px);
+    justify-content: center;
+    align-items: center;
+    padding: 0px;
+    z-index: 1002;
+    text-align: center;
+    background-color: color-mix(in srgb, var(--qitp-tertiary-color) 50%, transparent);
+}
+#menuItemsContent {
+    width: 100%;
+    max-width: 480px;
+    max-height: 100%;
+    overflow-y: auto;
+    background-color: color-mix(in srgb, var(--qitp-tertiary-color) 90%, transparent);
+    padding: 20px;
+    box-shadow: 0 0 10px 0px rgba(0, 0, 0, 0.25);
+}
+#menuItemsContainer.active {
+    display: flex;
+}
+#menuItemsContainer a {
+    padding: 0px;
+    margin: 0px;
+    line-height: 2;
+    text-decoration: none;
+    right: 0px;
+    cursor: pointer;
+    font-size: 16px;
+    border-bottom: 2px solid var(--qitp-tertiary-color);
+}
+#menuItemsContainer a:hover {
+    border-bottom: 2px solid var(--qitp-primary-color);
+}
+#menuItemsContainer ul {
+    padding-top: 50px;
+}
+#menuItemsContainer li {
+    list-style-type: none;
+    padding-right: 25px;
+    line-height: 50px;
+}
+
+.closeButton {
+    float: right;
+    height: 32px;
+    width: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.closeButton:hover {
+    filter: brightness(80%);
+}
+
 /* Bottom container styling */
 #bottomContainer {
     position: absolute;
@@ -127,11 +214,15 @@ body,
     visibility: hidden;
 }
 /* Charts styling */
-#tocLineChartDiv, #tocBubbleChartDiv, #tocLineChartCanvas, #tocBubbleChartCanvas {
+#tocLineChartDiv,
+#tocBubbleChartDiv,
+#tocLineChartCanvas,
+#tocBubbleChartCanvas {
     height: 100%;
     width: 100%;
 }
-#tocLineChartDiv.hidden, #tocBubbleChartDiv.hidden {
+#tocLineChartDiv.hidden,
+#tocBubbleChartDiv.hidden {
     display: none;
 }
 #tocLineChartDivToggle,

@@ -15,6 +15,7 @@ const logo = '';
 import * as htmlContent from './html-content.js';
 htmlContent.addTitle(title);
 htmlContent.addTitleDiv(title, defaultLogo, logo);
+htmlContent.addMenu();
 htmlContent.addLoaderDiv();
 htmlContent.addViewDiv();
 
@@ -53,6 +54,12 @@ addBottomContainer();
 // Wait for view / layer to be loaded first
 app.view.when(() => {
     app.view.whenLayerView(app.layers.rgToc).then(() => {
+        // Zoom to loaded layer
+        app.layers.rgToc.queryExtent().then((response) => {
+            app.view.goTo(response.extent, { duration: 1000 }).catch((error) => {
+                console.error(error);
+            });
+        });
         // Add table view to bottom container
         addTableView(app, arcgis);
         // Add chart to bottom container

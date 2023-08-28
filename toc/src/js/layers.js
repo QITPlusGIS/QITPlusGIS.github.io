@@ -8,18 +8,30 @@ export const addLayers = (app, arcgis) => {
     // Add layer references to app
     app.layers = {};
 
+    // Get site id
+    const sites = ['gold-coast-city', 'somerset-regional'];
+    let url_site = null;
+    const urlParams = new URLSearchParams(document.location.search);
+    const lgaId = urlParams.get('lga');
+    console.log(lgaId);
+    if (lgaId && sites.indexOf(lgaId) > 0) {
+        url_site = lgaId;
+    }
+    console.log(url_site);
+    const site_dir = url_site ? url_site : sites[0];
+
     // Subwatersheds for gauges
-    app.layers.sws = getSwsLayer(arcgis.GeoJSONLayer, './gis/sws.json');
+    app.layers.sws = getSwsLayer(arcgis.GeoJSONLayer, `./gis/${site_dir}/sws.json`);
     // Gold Coast administrative boundaries
-    app.layers.ab = getAbLayer(arcgis.GeoJSONLayer, './gis/ab.json');
+    app.layers.ab = getAbLayer(arcgis.GeoJSONLayer, `./gis/${site_dir}/ab.json`);
     // Longest flow paths for gauges
-    app.layers.lfps = getLfpsLayer(arcgis.GeoJSONLayer, './gis/lfps.json');
+    app.layers.lfps = getLfpsLayer(arcgis.GeoJSONLayer, `./gis/${site_dir}/lfps.json`);
     // Gauges relocation
-    app.layers.rgRelocation = getRgRelocationLayer(arcgis.GeoJSONLayer, './gis/rg-relocation.json');
+    app.layers.rgRelocation = getRgRelocationLayer(arcgis.GeoJSONLayer, `./gis/${site_dir}/rg-relocation.json`);
     // Gauges
     app.layers.rgToc = getRgTocLayer(
         arcgis.GeoJSONLayer,
-        './gis/rg-toc.json',
+        `./gis/${site_dir}/rg-toc.json`,
         arcgis.LabelClass,
         app.tocColors
     );

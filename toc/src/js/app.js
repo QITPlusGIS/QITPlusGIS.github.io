@@ -1,7 +1,7 @@
 /*
  * Main app object to reference other objects/functions/variables
  * to share between modules and simplify access
- * with some general ui functions e.g. loader animation controler
+ * with some general ui functions e.g. loader animation controller
  */
 
 export const App = () => {
