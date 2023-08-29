@@ -24,7 +24,7 @@ export const createMapView = (app, arcgis) => {
             color: 'rgba(0,0,0, 0.8)',
         },
         constraints: {
-            minZoom: 10,
+            minZoom: 8,
             maxZoom: 20,
         },
     });
@@ -75,7 +75,7 @@ export const createMapView = (app, arcgis) => {
     // Create Search widget
     app.widgets.search = new arcgis.Search({
         view: view,
-        locationEnabled: true,
+        locationEnabled: false,
         searchAllEnabled: false,
         includeDefaultSources: false,
     });

@@ -102,7 +102,7 @@
     color: var(--qitp-primary-color);
     background-color: color-mix(
         in srgb,
-        var(--qitp-quaternary-color) 90%,
+        var(--qitp-tertiary-color) 50%,
         transparent
     );
     border-left-color: var(--qitp-secondary-color);
@@ -110,7 +110,7 @@
 .esri-menu__list-item:hover {
     background-color: color-mix(
         in srgb,
-        var(--qitp-quaternary-color) 90%,
+        var(--qitp-secondary-color) 20%,
         transparent
     );
 }

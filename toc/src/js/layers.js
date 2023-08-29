@@ -13,16 +13,14 @@ export const addLayers = (app, arcgis) => {
     let url_site = null;
     const urlParams = new URLSearchParams(document.location.search);
     const lgaId = urlParams.get('lga');
-    console.log(lgaId);
     if (lgaId && sites.indexOf(lgaId) > 0) {
         url_site = lgaId;
     }
-    console.log(url_site);
     const site_dir = url_site ? url_site : sites[0];
 
     // Subwatersheds for gauges
     app.layers.sws = getSwsLayer(arcgis.GeoJSONLayer, `./gis/${site_dir}/sws.json`);
-    // Gold Coast administrative boundaries
+    // Administrative boundaries
     app.layers.ab = getAbLayer(arcgis.GeoJSONLayer, `./gis/${site_dir}/ab.json`);
     // Longest flow paths for gauges
     app.layers.lfps = getLfpsLayer(arcgis.GeoJSONLayer, `./gis/${site_dir}/lfps.json`);
@@ -92,7 +90,7 @@ const getAbLayer = (GeoJSONLayer, url) => {
 
     const layer = new GeoJSONLayer({
         id: 'ab',
-        title: 'Gold Coast City Administrative Boundary',
+        title: 'Administrative Boundary',
         url: url,
         displayField: 'lga_name',
         objectIdField: 'fid',
@@ -428,14 +426,6 @@ const addLayerInteractions = (app, reactiveUtils) => {
         }
     );
 
-    // Watch for popup close / restart to hide sws
-    reactiveUtils.watch(
-        () => view.popup.visible,
-        () => {
-            hideSws();
-        }
-    );
-
     // Set up search widget source to gauge layer
     app.widgets.search.sources = [
         {
@@ -443,7 +433,7 @@ const addLayerInteractions = (app, reactiveUtils) => {
             searchFields: ['code', 'name'],
             suggestionTemplate: '{code} - {name}',
             exactMatch: false,
-            outFields: ['code', 'name'],
+            outFields: ['code', 'name', 'calc_toc'],
             name: 'Gauges',
             placeholder: 'Gauge code or name',
             maxSuggestions: 6,

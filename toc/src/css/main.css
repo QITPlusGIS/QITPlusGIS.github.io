@@ -51,7 +51,7 @@ body,
 button, a, a:visited {
     border: none;
     color: var(--qitp-primary-color);
-    background-color: var(--qitp-tertiary-color);
+    background: none;
 }
 button:hover, a {
     color: var(--qitp-secondary-color);

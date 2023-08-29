@@ -118,7 +118,6 @@ const createTocLineChart = (app, Chart, features) => {
                 if (clickedElements.length === 0) return;
                 const { dataIndex, raw } = clickedElements[0].element.$context;
                 const label = event.chart.data.labels[dataIndex];
-                console.log(label);
                 app.layers.rgToc
                     .queryFeatures({
                         where: `code = '${label}'`,

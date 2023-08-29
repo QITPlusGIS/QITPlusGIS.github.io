@@ -1,1 +1,0 @@
-import{aO as n}from"./index-f2dd40fe.js";function s(o,f,e){if(!e||!e.features||!e.hasZ)return;const t=n(e.geometryType,f,o.outSpatialReference);if(t!=null)for(const a of e.features)t(a.geometry)}export{s as t};
