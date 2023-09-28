@@ -37,6 +37,11 @@ export const addMenu = () => {
           "href": "?lga=somerset-regional",
           "text": "Somerset Regional"
         },
+        {
+            "id": "scenic-rim-regional",
+            "href": "?lga=scenic-rim-regional",
+            "text": "Scenic Rim Regional"
+          },
       ];
     let menu = '<button id="closeMenuButton" class="closeButton"><calcite-icon icon="x" text-label="Close"></button><ul>';
     for (const ml of menuLinks) {

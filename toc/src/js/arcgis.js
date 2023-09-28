@@ -28,6 +28,7 @@ export { default as Legend } from '@arcgis/core/widgets/Legend';
 export { default as LayerList } from '@arcgis/core/widgets/LayerList';
 export { default as ElevationProfile } from '@arcgis/core/widgets/ElevationProfile';
 export { default as Search } from '@arcgis/core/widgets/Search';
+export { default as Editor } from '@arcgis/core/widgets/Editor';
 
 // Other
 export * as reactiveUtils from '@arcgis/core/core/reactiveUtils';

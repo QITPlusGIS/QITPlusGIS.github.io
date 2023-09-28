@@ -9,7 +9,7 @@ export const addLayers = (app, arcgis) => {
     app.layers = {};
 
     // Get site id
-    const sites = ['gold-coast-city', 'somerset-regional'];
+    const sites = ['gold-coast-city', 'somerset-regional', 'scenic-rim-regional'];
     let url_site = null;
     const urlParams = new URLSearchParams(document.location.search);
     const lgaId = urlParams.get('lga');
@@ -17,6 +17,9 @@ export const addLayers = (app, arcgis) => {
         url_site = lgaId;
     }
     const site_dir = url_site ? url_site : sites[0];
+
+    // 
+    app.layers.channels = getChannelsLayer(arcgis.ImageryTileLayer);
 
     // Subwatersheds for gauges
     app.layers.sws = getSwsLayer(arcgis.GeoJSONLayer, `./gis/${site_dir}/sws.json`);
@@ -38,12 +41,53 @@ export const addLayers = (app, arcgis) => {
     addLayerInteractions(app, arcgis.reactiveUtils);
 
     // Add layers to map - order is important (or index can be used as param)
+    map.add(app.layers.channels);
     map.add(app.layers.sws);
     map.add(app.layers.lfps);
     map.add(app.layers.ab);
     map.add(app.layers.rgRelocation);
     map.add(app.layers.rgToc);
 };
+
+const getChannelsLayer = (ImageryTileLayer) => {
+    const layer = new ImageryTileLayer({
+        title: 'Channels',
+        url: './gis/channels.tif',
+        visible: false,
+    });
+    layer.renderer = {
+        type: 'raster-colormap',
+        colormapInfos: [
+            {
+              "value": 1,
+              "color": "rgb(0,192,255)",
+              "label": ">100"
+            },
+            {
+              "value": 2,
+              "color": "rgb(0,128,255)",
+              "label": ">1000"
+            },
+            {
+              "value": 3,
+              "color": "rgb(0,96,192)",
+              "label": ">10000"
+            },
+            {
+              "value": 4,
+              "color": "rgb(0,64,128)",
+              "label": ">100000"
+            },
+            {
+              "value": 5,
+              "color": "rgb(0,32,64)",
+              "label": ">1000000"
+            }
+          ],
+    };
+    layer.opacity = 0.75;
+    return layer;
+}
 
 const getSwsLayer = (GeoJSONLayer, url) => {
     const renderer = {
@@ -193,7 +237,7 @@ const getRgTocLayer = (GeoJSONLayer, url, LabelClass, tocColors) => {
             legendOptions: { title: 'TOC in hours' },
             type: 'size',
             valueExpression:
-                '($feature.toc_jbp + $feature.toc_kir + $feature.toc_pil + $feature.toc_bw_avg + $feature.toc_bw_eqa)/5',
+                '($feature.toc_kir + $feature.toc_pil)/2',
             minSize: 15,
             maxSize: 60,
             minDataValue: 0,
