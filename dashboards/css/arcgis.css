@@ -1,0 +1,29 @@
+/* Esri adjustments */
+.esri-attribution {
+    color: var(--color);
+    background-color: color-mix(
+        in srgb,
+        var(--backgroundColor) 50%,
+        transparent
+    );
+}
+/* removing active outline around whole view when clicking in map */
+.esri-view .esri-view-surface--touch-none:focus::after {
+    outline: none;
+}
+.esri-search {
+    width: 100%;
+    
+}
+.esri-search__input {
+    border: 1px solid var(--highlightColor);
+}
+.esri-widget--button,
+.esri-search .esri-widget--button {
+    color: var(--color);
+    background: var(--darkerColor);
+}
+.esri-widget--button:hover {
+    color: var(--color);
+    background: var(--highlightColor) !important;
+}

@@ -1,0 +1,19 @@
+{
+  "name": "dashboards",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^4.4.0"
+  },
+  "dependencies": {
+    "@arcgis/core": "^4.28.3",
+    "@esri/calcite-components": "^1.10.0",
+    "@esri/calcite-ui-icons": "^3.25.0"
+  }
+}
