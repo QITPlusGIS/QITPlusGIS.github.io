@@ -25,7 +25,7 @@ export const colorTemplates = {
         lgaWithDashColor: 'rgb(255, 0, 0)',
         lgaNoDashColor: 'rgb(255, 255, 255)',
     },
-    clown: {
+    fuchsia: {
         color: 'rgb(139, 0, 139)',
         backgroundColor: 'rgb(255, 255, 255)',
         highlightColor: 'rgb(255, 0, 144)',
