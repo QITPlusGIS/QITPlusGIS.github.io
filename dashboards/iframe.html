@@ -4,12 +4,105 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="initial-scale=1, width=device-width" />
         <title>QIT Plus - Dashboards</title>
-
+        <style>
+            body{
+                display: table;
+            }
+            iframe{
+                margin: 10px;
+            }
+        </style>
     </head>
     <body>
-        <iframe src="/index.html" width="400" height="800" style="border:1px solid black;">
+        <!-- Color templates -->
+        <iframe
+            src="./index.html"
+            width="400"
+            height="800"
+            style="border: 1px solid black"
+        >
         </iframe>
-        <iframe src="/index.html" width="800" height="400" style="border:1px solid black;">
+        <iframe
+            src="./index.html?ct=light"
+            width="400"
+            height="800"
+            style="border: 1px solid black"
+        >
         </iframe>
+        <iframe
+            src="./index.html?ct=dark"
+            width="400"
+            height="800"
+            style="border: 1px solid black"
+        >
+        </iframe>
+        <iframe
+            src="./index.html?ct=fuchsia"
+            width="400"
+            height="800"
+            style="border: 1px solid black"
+        >
+        </iframe>
+
+         <!-- Visible elements -->
+        <iframe
+            src="./index.html?sh=0"
+            width="400"
+            height="800"
+            style="border: 1px solid black"
+        >
+        </iframe>
+        <iframe
+            src="./index.html?ssp=0"
+            width="400"
+            height="800"
+            style="border: 1px solid black"
+        >
+        </iframe>
+        <iframe
+            src="./index.html?sh=0&ssp=0"
+            width="400"
+            height="800"
+            style="border: 1px solid black"
+        >
+        </iframe>
+        <iframe
+            src="./index.html?sh=0&ssp=0&le=0"
+            width="400"
+            height="800"
+            style="border: 1px solid black"
+        >
+        </iframe>
+
+        <!-- Landscape visible elements -->
+        <iframe
+            src="./index.html?sh=0"
+            width="800"
+            height="400"
+            style="border: 1px solid black"
+        >
+        </iframe>
+        <iframe
+            src="./index.html?ssp=0"
+            width="800"
+            height="400"
+            style="border: 1px solid black"
+        >
+        </iframe>
+        <iframe
+            src="./index.html?sh=0&ssp=0"
+            width="800"
+            height="400"
+            style="border: 1px solid black"
+        >
+        </iframe>
+        <iframe
+            src="./index.html?sh=0&ssp=0&le=0"
+            width="800"
+            height="400"
+            style="border: 1px solid black"
+        >
+        </iframe>
+
     </body>
 </html>

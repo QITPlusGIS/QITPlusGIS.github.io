@@ -27,8 +27,6 @@ const app = {
     showHeader: true,
     // Show search panel with council list next to map
     showSearchPanel: true,
-    // Open dashboard right after click on polygon with dashboard
-    onClickDash: true,
     // Show layer with simulated river flow in AU
     showRiverFlow: true,
     layerEffect: true,

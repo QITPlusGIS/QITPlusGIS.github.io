@@ -148,9 +148,6 @@ export const addMapViewHandlers = (app) => {
                 if (app.highlightSelect) app.highlightSelect.remove();
                 app.highlightSelect = app.mainLayerView.highlight(hitTest.results[0].graphic);
                 const attributes = hitTest.results[0].graphic.attributes;
-                if (attributes.dashUrl && app.onClickDash) {
-                    window.open(attributes.dashUrl, '_blank');
-                }
                 app.utils.showResultInfo(app, attributes);
             }
         });

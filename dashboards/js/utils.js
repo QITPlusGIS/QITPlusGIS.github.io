@@ -25,10 +25,9 @@ export const adjustAppByURLParams = (app) => {
     const urlParams = new URLSearchParams(document.location.search);
     if (urlParams.has('sh')) app.showHeader = Number(urlParams.get('sh')) ? true : false;
     if (urlParams.has('ssp')) app.showSearchPanel = Number(urlParams.get('ssp')) ? true : false;
-    if (urlParams.has('ocd')) app.onClickDash = Number(urlParams.get('ocd')) ? true : false;
     if (urlParams.has('srf')) app.showRiverFlow = Number(urlParams.get('srf')) ? true : false;
     if (urlParams.has('le')) app.layerEffect = Number(urlParams.get('le')) ? true : false;
-    app.colorTemplate = colorTemplates.dark;
+    app.colorTemplate = colorTemplates.default;
     if (urlParams.has('ct')){
         const ct = urlParams.get('ct');
         if (colorTemplates.hasOwnProperty(ct)){
@@ -83,5 +82,7 @@ export const showResultInfo = (app, attributes) => {
         }
         infoList.appendChild(imsItem);
         app.ui.searchPanelContent.appendChild(infoList);
+    } else {
+        if (dashUrl) window.open(dashUrl, '_blank');
     }
 }
