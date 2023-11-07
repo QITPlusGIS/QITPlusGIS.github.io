@@ -154,19 +154,28 @@ export const addMapViewHandlers = (app) => {
 
         // Listen for the pointer-move event on the View
         view.on('pointer-move', (event) => {
-            debouncedUpdate(event).catch((err) => {
-                if (!promiseUtils.isAbortError(err)) {
-                    throw err;
-                }
-            });
+            if (!app.ui.pointerDown){
+                debouncedUpdate(event).catch((err) => {
+                    if (!promiseUtils.isAbortError(err)) {
+                        throw err;
+                    }
+                });
+            }
         });
         // Listen for the pointer-click event on the View
-        view.on('pointer-down', (event) => {
+        view.on('immediate-click', (event) => {
             debouncedClick(event).catch((err) => {
                 if (!promiseUtils.isAbortError(err)) {
                     throw err;
                 }
             });
+        });
+
+        view.on('pointer-down', (event) => {
+            app.ui.pointerDown = true;
+        });
+        view.on('pointer-up', (event) => {
+            app.ui.pointerDown = false;
         });
     });
 };

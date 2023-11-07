@@ -22,7 +22,7 @@ const app = {
     highlightSelect: false,
     utils: utils,
     widgets: {},
-    ui: {icons:{}},
+    ui: {icons:{}, pointerDown: false},
     // Show header with QIT logo
     showHeader: true,
     // Show search panel with council list next to map
