@@ -38,7 +38,7 @@ const loadHeader = async (app) => {
 
 // Load search panel
 const loadSearchPanel = async (app) => {
-    if (app.showHeader) {
+    if (app.showSearchPanel) {
         await import('/css/searchPanel.css');
         const { addSearchPanel } = await import('./ui/searchPanel');
         return addSearchPanel(app);

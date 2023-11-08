@@ -2,13 +2,22 @@
 import VectorTileLayer from '@arcgis/core/layers/VectorTileLayer';
 import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
 import ImageryLayer from '@arcgis/core/layers/ImageryLayer';
+import * as reactiveUtils from '@arcgis/core/core/reactiveUtils.js';
 
 export const addLayers = (app) => {
-    app.layers = {
-        bm: addBaseMapLayer(app),
-        ab: addAdminBoundLayer(app),
-        oc: addOceanCurrents(app),
-    };
+    app.layers.bm = addBaseMapLayer(app);
+    app.layers.ab = addAdminBoundLayer(app);
+    if (app.showFlow) {
+        app.mapView.when(() => {
+            app.mapView.whenLayerView(app.layers.ab).then(() => {
+                reactiveUtils
+                    .whenOnce(() => app.mapView.stationary === true)
+                    .then(() => {
+                        app.layers.oc = addOceanCurrents(app);
+                    });
+            });
+        });
+    }
 };
 
 const addBaseMapLayer = (app) => {
@@ -110,23 +119,19 @@ const addAdminBoundLayer = (app) => {
 };
 
 const addOceanCurrents = (app) => {
-    if (app.showFlow){
-        let layer = new ImageryLayer({
-            url: 'https://oceans4.arcgis.com/arcgis/rest/services/HYCOM_UV/ImageServer',
-            renderer: {
-                type: 'flow',
-                color: app.colorTemplate.flowColor,
-                density: 0.5,
-                trailLength: 500,
-                maxPathLength: 1000,
-                trailWidth: '2px',
-                flowSpeed: 50,
-            },
-        });
-        if (app.layerEffect) layer.effect = 'bloom(1.5, 0.5px, 0)';
-        app.map.add(layer, 1);
-        return layer;
-    } else {
-        return {};
-    }
+    const layer = new ImageryLayer({
+        url: 'https://oceans4.arcgis.com/arcgis/rest/services/HYCOM_UV/ImageServer',
+        renderer: {
+            type: 'flow',
+            color: app.colorTemplate.flowColor,
+            density: 0.5,
+            trailLength: 500,
+            maxPathLength: 1000,
+            trailWidth: '2px',
+            flowSpeed: 50,
+        },
+    });
+    if (app.layerEffect) layer.effect = 'bloom(1.5, 0.5px, 0)';
+    app.map.add(layer, 1);
+    return layer;
 };

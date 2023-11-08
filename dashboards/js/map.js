@@ -111,8 +111,7 @@ export const addMapViewHandlers = (app) => {
         let highlight;
         let objectId;
         // Add tooltip div
-        const tooltip = document.createElement('div');
-        tooltip.id = 'tooltip';
+        const tooltip = document.getElementById('tooltip');
         document.body.appendChild(tooltip);
 
         const debouncedUpdate = promiseUtils.debounce(async (event) => {
