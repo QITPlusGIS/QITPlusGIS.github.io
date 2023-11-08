@@ -1,3 +1,18 @@
+// Esri config
+import esriConfig from '@arcgis/core/config';
+
+// API Key for dashboard of dashboards 
+const esriToken =
+    'AAPK30f9595f237e4f1e89808a1fae6ab62alZTmtvbzc6_rS84n1fQkkWSHiDCqby1pMpPgLmc7HKIb4X4skqCFbsRw-kZjrsFk';
+esriConfig.apiKey = esriToken;
+
+// Map and view
+import Map from '@arcgis/core/Map';
+import MapView from '@arcgis/core/views/MapView';
+
+// Promise utils
+import * as promiseUtils from "@arcgis/core/core/promiseUtils.js";
+
 export const addMap = (app) => {
     app.map = createMap(app);
     app.mapView = createMapView(app);
@@ -5,12 +20,12 @@ export const addMap = (app) => {
 };
 
 const createMap = (app) => {
-    const map = new app.arcgis.Map({});
+    const map = new Map({});
     return map;
 };
 
 const createMapView = (app) => {
-    const mapView = new app.arcgis.MapView({
+    const mapView = new MapView({
         map: app.map,
         center: [133, -27],
         scale: 25000000,
@@ -88,7 +103,6 @@ export const addMapViewHandlers = (app) => {
     // Handlers for map view events
     const view = app.mapView;
     const layer = app.layers.ab;
-    const promiseUtils = app.arcgis.promiseUtils;
     const opts = {
         include: layer,
     };

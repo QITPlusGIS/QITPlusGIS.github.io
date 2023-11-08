@@ -1,3 +1,8 @@
+// Layers
+import VectorTileLayer from '@arcgis/core/layers/VectorTileLayer';
+import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
+import ImageryLayer from '@arcgis/core/layers/ImageryLayer';
+
 export const addLayers = (app) => {
     app.layers = {
         bm: addBaseMapLayer(app),
@@ -7,7 +12,7 @@ export const addLayers = (app) => {
 };
 
 const addBaseMapLayer = (app) => {
-    const layer = new app.arcgis.VectorTileLayer({
+    const layer = new VectorTileLayer({
         id: 'bm',
         title: 'bm',
         style: {
@@ -37,7 +42,7 @@ const addBaseMapLayer = (app) => {
 };
 
 const addAdminBoundLayer = (app) => {
-    const layer = new app.arcgis.FeatureLayer({
+    const layer = new FeatureLayer({
         id: 'ab',
         title: 'ab',
         url: 'https://services7.arcgis.com/si70weKpzPSa0BGV/arcgis/rest/services/QIT_Plus_LGA_Public/FeatureServer/0',
@@ -106,7 +111,7 @@ const addAdminBoundLayer = (app) => {
 
 const addOceanCurrents = (app) => {
     if (app.showFlow){
-        let layer = new app.arcgis.ImageryLayer({
+        let layer = new ImageryLayer({
             url: 'https://oceans4.arcgis.com/arcgis/rest/services/HYCOM_UV/ImageServer',
             renderer: {
                 type: 'flow',

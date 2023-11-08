@@ -1,5 +1,14 @@
 import { colorTemplates } from './ui/colorTemplates';
 
+// Arcgis Icons
+import {
+    home24,
+    information24,
+    dashboard24,
+    checkShield24,
+    circleDisallowed24,
+} from '@esri/calcite-ui-icons';
+
 export const rgbToRgba = (rgb, a) => {
     const rgba = rgb.replace('rgb', 'rgba').replace(')', `,${a})`);
     return rgba;
@@ -27,10 +36,11 @@ export const adjustAppByURLParams = (app) => {
     if (urlParams.has('ssp')) app.showSearchPanel = Number(urlParams.get('ssp')) ? true : false;
     if (urlParams.has('sf')) app.showFlow = Number(urlParams.get('sf')) ? true : false;
     if (urlParams.has('le')) app.layerEffect = Number(urlParams.get('le')) ? true : false;
-    app.colorTemplate = colorTemplates.default;
+    app.colorTemplate = colorTemplates[app.colorTemplateLabel];
     if (urlParams.has('ct')){
         const ct = urlParams.get('ct');
         if (colorTemplates.hasOwnProperty(ct)){
+            app.colorTemplateLabel = ct;
             app.colorTemplate = colorTemplates[ct];
         }
     }
@@ -38,11 +48,11 @@ export const adjustAppByURLParams = (app) => {
 
 export const addIcons = (app) => {
     const iconInfos = {
-        home: ['Default extent', app.arcgis.home24],
-        info: ['Information', app.arcgis.information24],
-        dash: ['Dashboard', app.arcgis.dashboard24],
-        shield: ['Guardian IMS', app.arcgis.checkShield24],
-        na: ['NA', app.arcgis.circleDisallowed24],
+        home: ['Default extent', home24],
+        info: ['Information', information24],
+        dash: ['Dashboard', dashboard24],
+        shield: ['Guardian IMS', checkShield24],
+        na: ['NA', circleDisallowed24],
     };
     for (const key in iconInfos){
         app.ui.icons[key] = `<svg xmlns="http://www.w3.org/2000/svg"><title>${iconInfos[key][0]}</title><path d="${iconInfos[key][1]}" /></svg>`;

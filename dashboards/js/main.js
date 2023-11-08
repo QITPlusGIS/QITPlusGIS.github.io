@@ -2,27 +2,48 @@
  *QIT Plus - Dashboards
  */
 
-// ArcGIS CSS
-import '@arcgis/core/assets/esri/themes/light/main.css';
-// QIT Plus CSS
-import '/css/main.css';
+const loadCss = async (app) => {
+    // ArcGIS CSS
+    await import('@arcgis/core/assets/esri/themes/light/main.css');
+    // QIT Plus CSS
+    await import('/css/main.css');
+    // Set CSS
+    app.utils.setCss(app.colorTemplate);
+};
 
-// Import ArcGIS JS modules
-import * as arcgis from './arcgis';
-// IMport other modules
+// Import other modules
 import * as utils from './utils';
-import { addMap } from './map';
-import { addLayers } from './layers';
+
+// Load header
+const loadHeader = async (app) => {
+    if (app.showHeader) {
+        await import('/css/header.css');
+        await import('/css/header.css');
+        const { addHeader } = await import('./ui/header');
+        return addHeader(app);
+    }
+};
+
+// Load map
+const loadMap = async (app) => {
+    const { addMap } = await import('./map');
+    return addMap(app);
+};
+
+// Load layers
+const loadLayers = async (app) => {
+    const { addLayers } = await import('./layers');
+    return addLayers(app);
+};
 
 // Main app object with app setup
 const app = {
-    arcgis: arcgis,
     layers: {},
     mainLayerView: {},
     highlightSelect: false,
     utils: utils,
     widgets: {},
-    ui: {icons:{}, pointerDown: false},
+    ui: { icons: {}, pointerDown: false },
     // Show header with QIT logo
     showHeader: true,
     // Show search panel with council list next to map
@@ -30,6 +51,7 @@ const app = {
     // Show layer with simulated river flow in AU
     showFlow: true,
     layerEffect: true,
+    colorTemplateLabel: 'default',
     colorTemplate: {},
 };
 
@@ -37,42 +59,52 @@ const app = {
 app.utils.adjustAppByURLParams(app);
 // Make arcgis icon paths available as SVG icons in app.ui.icons
 app.utils.addIcons(app);
-// Set CSS
-app.utils.setCss(app.colorTemplate);
 
 // Main container enclosing all about Dashboards Map
 app.ui.dashboardsMainContainer = document.getElementById(
     'dashboardsMainContainer'
 );
-if (app.ui.dashboardsMainContainer) {
-    // Add map container
-    app.ui.mapInterfaceContainer = document.createElement('div');
-    app.ui.mapInterfaceContainer.id = 'mapInterfaceContainer';
-    app.ui.mapViewContainer = document.createElement('div');
-    app.ui.mapViewContainer.id = 'mapViewContainer';
-    app.ui.mapInterfaceContainer.appendChild(app.ui.mapViewContainer);
-    app.ui.dashboardsMainContainer.appendChild(app.ui.mapInterfaceContainer);
+app.ui.mapInterfaceContainer = document.getElementById('mapInterfaceContainer');
+app.ui.mapViewContainer = document.getElementById('mapInterfaceContainer');
 
-    // Add map including map view and adjustments
-    addMap(app);
-    // Add layers to map
-    addLayers(app);
-
-    // Add page header with logo and heading if desired
-    if (app.showHeader) {
-        import('./ui/header').then((module) => {
-            import('/css/header.css');
-            const { addHeader } = module;
-            addHeader(app);
-        });
-    }
-
-    // Add search panel if desired
-    if (app.showSearchPanel) {
-        import('/css/searchPanel.css');
-        import('./ui/searchPanel').then((module) => {
-            const { addSearchPanel } = module;
-            addSearchPanel(app);
-        });
-    }
-}
+// Add map including map view and adjustments
+loadCss(app)
+    .then(() => {
+        // Add page header with logo and heading if desired
+        loadHeader(app)
+            .then(() => {
+                // Add map
+                loadMap(app)
+                    .then(() => {
+                        // Add layers to map
+                        loadLayers(app)
+                            .then(() => {
+                                // Add search panel if desired
+                                if (app.showSearchPanel) {
+                                    (async () => {
+                                        import('/css/searchPanel.css');
+                                        import('./ui/searchPanel').then(
+                                            (module) => {
+                                                const { addSearchPanel } =
+                                                    module;
+                                                addSearchPanel(app);
+                                            }
+                                        );
+                                    })();
+                                }
+                            })
+                            .catch((error) => {
+                                console.log(error);
+                            });
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    })
+    .catch((error) => {
+        console.log(error);
+    });

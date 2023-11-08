@@ -14,7 +14,6 @@
     font-size: 22px;
 }
 #logo {
-    height: 50px;
     padding: 0px 20px;
     vertical-align: middle;
 }
@@ -28,6 +27,7 @@
     }
     #logo {
         height: 40px;
+        width: 58px;
     }
     #mapInterfaceContainer{
         height: calc(100% - 70px);
