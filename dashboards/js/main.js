@@ -2,6 +2,10 @@
  *QIT Plus - Dashboards
  */
 
+ // Import utils
+import * as utils from './utils';
+
+// Load CSS
 const loadCss = async (app) => {
     // ArcGIS CSS
     await import('@arcgis/core/assets/esri/themes/light/main.css');
@@ -9,19 +13,6 @@ const loadCss = async (app) => {
     await import('/css/main.css');
     // Set CSS
     app.utils.setCss(app.colorTemplate);
-};
-
-// Import other modules
-import * as utils from './utils';
-
-// Load header
-const loadHeader = async (app) => {
-    if (app.showHeader) {
-        await import('/css/header.css');
-        await import('/css/header.css');
-        const { addHeader } = await import('./ui/header');
-        return addHeader(app);
-    }
 };
 
 // Load map
@@ -34,6 +25,24 @@ const loadMap = async (app) => {
 const loadLayers = async (app) => {
     const { addLayers } = await import('./layers');
     return addLayers(app);
+};
+
+// Load header
+const loadHeader = async (app) => {
+    if (app.showHeader) {
+        await import('/css/header.css');
+        const { addHeader } = await import('./ui/header');
+        return addHeader(app);
+    }
+};
+
+// Load search panel
+const loadSearchPanel = async (app) => {
+    if (app.showHeader) {
+        await import('/css/searchPanel.css');
+        const { addSearchPanel } = await import('./ui/searchPanel');
+        return addSearchPanel(app);
+    }
 };
 
 // Main app object with app setup
@@ -81,16 +90,7 @@ loadCss(app)
                             .then(() => {
                                 // Add search panel if desired
                                 if (app.showSearchPanel) {
-                                    (async () => {
-                                        import('/css/searchPanel.css');
-                                        import('./ui/searchPanel').then(
-                                            (module) => {
-                                                const { addSearchPanel } =
-                                                    module;
-                                                addSearchPanel(app);
-                                            }
-                                        );
-                                    })();
+                                    loadSearchPanel(app);
                                 }
                             })
                             .catch((error) => {

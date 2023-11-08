@@ -5,7 +5,7 @@
 The **map interface** is available at [QIT Plus - Dashboards](https://qitplusgis.github.io/dashboards/dist/).
 
 # Parameters to adjust the user interface
-Examples are available at [Examples aa iframes](https://qitplusgis.github.io/dashboards/dist/iframe.html).
+Examples are available at [Examples in iframes](https://qitplusgis.github.io/dashboards/dist/iframe.html).
 
 E.g. [Same page with light color template, no heading, no search panel and layer effect turned off](https://qitplusgis.github.io/dashboards/dist/?ct=light&sh=0&ssp=0&le=0).
 

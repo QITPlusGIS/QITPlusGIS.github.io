@@ -35,7 +35,6 @@
 #searchPanelContent ul > li:last-child {
     border-bottom: none;
 }
-
 #searchPanelContent button {
     background: none;
     border: none;
@@ -47,7 +46,6 @@
 #searchPanelContent button:hover {
     cursor: pointer;
 }
-
 #searchPanelContent ul li a,
 #searchPanelContent ul li a:visited {
     color: var(--color);

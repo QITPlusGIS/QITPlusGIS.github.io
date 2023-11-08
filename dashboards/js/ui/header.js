@@ -1,5 +1,6 @@
 export const addHeader = (app) => {
-    app.ui.headerContainer = document.getElementById('headerContainer');    
+    app.ui.headerContainer = document.createElement('div');
+    app.ui.headerContainer.id = 'headerContainer';
     const filter =
         app.colorTemplateLabel == 'dark'
             ? 'style="filter: grayscale(100%)"'
