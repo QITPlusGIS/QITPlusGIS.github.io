@@ -17,6 +17,7 @@ export { default as MapView } from '@arcgis/core/views/MapView';
 // Layers
 export { default as VectorTileLayer } from '@arcgis/core/layers/VectorTileLayer';
 export { default as FeatureLayer } from '@arcgis/core/layers/FeatureLayer';
+export { default as ImageryLayer } from '@arcgis/core/layers/ImageryLayer';
 
 // Promise utils
 export * as promiseUtils from "@arcgis/core/core/promiseUtils.js";

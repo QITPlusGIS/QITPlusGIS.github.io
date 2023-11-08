@@ -28,7 +28,7 @@ const app = {
     // Show search panel with council list next to map
     showSearchPanel: true,
     // Show layer with simulated river flow in AU
-    showRiverFlow: true,
+    showFlow: true,
     layerEffect: true,
     colorTemplate: {},
 };

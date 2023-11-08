@@ -2,6 +2,7 @@ export const addLayers = (app) => {
     app.layers = {
         bm: addBaseMapLayer(app),
         ab: addAdminBoundLayer(app),
+        oc: addOceanCurrents(app),
     };
 };
 
@@ -101,4 +102,26 @@ const addAdminBoundLayer = (app) => {
     app.map.add(layer);
 
     return layer;
+};
+
+const addOceanCurrents = (app) => {
+    if (app.showFlow){
+        let layer = new app.arcgis.ImageryLayer({
+            url: 'https://oceans4.arcgis.com/arcgis/rest/services/HYCOM_UV/ImageServer',
+            renderer: {
+                type: 'flow',
+                color: app.colorTemplate.flowColor,
+                density: 0.5,
+                trailLength: 500,
+                maxPathLength: 1000,
+                trailWidth: '2px',
+                flowSpeed: 50,
+            },
+        });
+        if (app.layerEffect) layer.effect = 'bloom(1.5, 0.5px, 0)';
+        app.map.add(layer, 1);
+        return layer;
+    } else {
+        return {};
+    }
 };

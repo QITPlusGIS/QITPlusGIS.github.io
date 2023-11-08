@@ -25,7 +25,7 @@ export const adjustAppByURLParams = (app) => {
     const urlParams = new URLSearchParams(document.location.search);
     if (urlParams.has('sh')) app.showHeader = Number(urlParams.get('sh')) ? true : false;
     if (urlParams.has('ssp')) app.showSearchPanel = Number(urlParams.get('ssp')) ? true : false;
-    if (urlParams.has('srf')) app.showRiverFlow = Number(urlParams.get('srf')) ? true : false;
+    if (urlParams.has('sf')) app.showFlow = Number(urlParams.get('sf')) ? true : false;
     if (urlParams.has('le')) app.layerEffect = Number(urlParams.get('le')) ? true : false;
     app.colorTemplate = colorTemplates.default;
     if (urlParams.has('ct')){

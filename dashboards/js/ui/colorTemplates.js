@@ -7,6 +7,7 @@ export const colorTemplates = {
         landColor: 'rgb(32, 32, 32)',
         lgaWithDashColor: 'rgb(244, 132, 32)',
         lgaNoDashColor: 'rgb(255, 255, 255)',
+        flowColor: 'rgb(64, 100, 255)',
     },
     light: {
         color: 'rgb(27, 45, 107)',
@@ -16,6 +17,7 @@ export const colorTemplates = {
         landColor: 'rgb(232, 232, 232)',
         lgaWithDashColor: 'rgb(255, 128, 0)',
         lgaNoDashColor: 'rgb(192, 192, 192)',
+        flowColor: 'rgb(192, 208, 255)',
     },
     dark: {
         color: 'rgb(232, 232, 232)',
@@ -25,6 +27,7 @@ export const colorTemplates = {
         landColor: 'rgb(32, 32, 32)',
         lgaWithDashColor: 'rgb(128, 128, 128)',
         lgaNoDashColor: 'rgb(232, 232, 232)',
+        flowColor: 'rgb(48, 48, 48)',
     },
     christmas: {
         color: 'rgb(0, 64, 0)',
@@ -34,6 +37,7 @@ export const colorTemplates = {
         landColor: 'rgb(0, 64, 0)',
         lgaWithDashColor: 'rgb(255, 0, 0)',
         lgaNoDashColor: 'rgb(255, 255, 255)',
+        flowColor: 'rgba(230, 159, 0, 0.75)',
     },
     fuchsia: {
         color: 'rgb(139, 0, 139)',
@@ -43,5 +47,6 @@ export const colorTemplates = {
         landColor: 'rgb(76, 187, 23)',
         lgaWithDashColor: 'rgb(253, 108, 158)',
         lgaNoDashColor: 'rgb(253, 108, 158)',
+        flowColor: 'rgba(0, 32, 8, 0.25)',
     },
 }

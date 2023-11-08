@@ -22,5 +22,5 @@ To turn search panel off set ssp=0. This setting also makes clicking on polygons
 By default effect on LGA layer (in code as **ab** for administrative boundaries) is set *bloom* for polygons with dashboard url (dash_url) and *opacity* and *drop-shadow* for rest.
 To turn layer effect off set le=0
 
-## Show river flow - srf
-This feature was planned to show flow of rivers in Australia but is not implemented yet due to complications with setup of underlying layer (dataset). Maybe in future.
+## Show flow - sf
+This feature shows flow of ocean currents. To turn flow off set sf=0
