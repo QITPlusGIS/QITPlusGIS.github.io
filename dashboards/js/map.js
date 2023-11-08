@@ -1,7 +1,7 @@
 // Esri config
 import esriConfig from '@arcgis/core/config';
 
-// API Key for dashboard of dashboards 
+// API Key for dashboard of dashboards
 const esriToken =
     'AAPK30f9595f237e4f1e89808a1fae6ab62alZTmtvbzc6_rS84n1fQkkWSHiDCqby1pMpPgLmc7HKIb4X4skqCFbsRw-kZjrsFk';
 esriConfig.apiKey = esriToken;
@@ -11,7 +11,7 @@ import Map from '@arcgis/core/Map';
 import MapView from '@arcgis/core/views/MapView';
 
 // Promise utils
-import * as promiseUtils from "@arcgis/core/core/promiseUtils.js";
+import * as promiseUtils from '@arcgis/core/core/promiseUtils.js';
 
 export const addMap = (app) => {
     app.map = createMap(app);
@@ -53,45 +53,58 @@ const createMapView = (app) => {
     return mapView;
 };
 
+const addQITAttribution = (app) => {
+    const at = app.mapView.ui.find('attribution');
+    at.when(() => {
+        const el = document.getElementsByClassName(
+            'esri-attribution__powered-by'
+        )[0];
+        if (el) {
+            const attributionContent = el.innerHTML;
+            const replacement =
+                'Powered by <a class="esri-attribution__link" href="https://qitplus.com">QIT Plus</a>,';
+            el.innerHTML = attributionContent.replace(
+                'Powered by',
+                replacement
+            );
+        }
+    });
+};
+
+const addHomeButton = (app) => {
+    const elZT = document.createElement('div');
+    elZT.id = 'default-extent';
+    elZT.className = 'esri-widget esri-widget--button esri-interactive';
+    elZT.title = 'Default extent';
+    elZT.role = 'button';
+    elZT.tabIndex = 0;
+    elZT.innerHTML = app.ui.icons.home;
+    document.body.appendChild(elZT);
+    app.mapView.ui.add('default-extent', 'top-left');
+    elZT.addEventListener('click', () => {
+        if (app.highlightSelect) app.highlightSelect.remove();
+        app.utils.zoomToQueryLayer(app, app.layers.ab, 'dash_url is not null');
+        app.utils.resetSearchPanel(app);
+    });
+};
+
 const adjustMapView = (app) => {
     app.mapView.when(() => {
         // Zoom to councils with dashboard
         if (app.layers.ab) {
             app.mapView.whenLayerView(app.layers.ab).then((layerView) => {
-                app.utils.zoomToQueryLayer(app, app.layers.ab, 'dash_url is not null');
+                app.utils.zoomToQueryLayer(
+                    app,
+                    app.layers.ab,
+                    'dash_url is not null'
+                );
                 app.mainLayerView = layerView;
             });
         }
         // Add QIT Plus to attribution part Powered by...
-        const at = app.mapView.ui.find('attribution');
-        at.when(() => {
-            const el = document.getElementsByClassName(
-                'esri-attribution__powered-by'
-            )[0];
-            if (el) {
-                const attributionContent = el.innerHTML;
-                const replacement =
-                    'Powered by <a class="esri-attribution__link" href="https://qitplus.com">QIT Plus</a>,';
-                el.innerHTML = attributionContent.replace(
-                    'Powered by',
-                    replacement
-                );
-            }
-        });
+        addQITAttribution(app);
         // Add Home button
-        const elZT = document.createElement('div');
-        elZT.id = 'default-extent';
-        elZT.className = 'esri-widget esri-widget--button esri-interactive';
-        elZT.title = 'Default extent';
-        elZT.innerHTML = app.ui.icons.home;
-        document.body.appendChild(elZT);
-        app.mapView.ui.add('default-extent', 'top-left');
-        elZT.addEventListener('click', () => {
-            if (app.highlightSelect) app.highlightSelect.remove();
-            app.utils.zoomToQueryLayer(app, app.layers.ab, 'dash_url is not null');
-            app.utils.resetSearchPanel(app);
-        });
-
+        addHomeButton(app);
         // Add map view handlers
         if (app.layers.ab) {
             addMapViewHandlers(app);
@@ -159,7 +172,9 @@ export const addMapViewHandlers = (app) => {
                 if (app.highlightSelect) app.highlightSelect.remove();
             } else {
                 if (app.highlightSelect) app.highlightSelect.remove();
-                app.highlightSelect = app.mainLayerView.highlight(hitTest.results[0].graphic);
+                app.highlightSelect = app.mainLayerView.highlight(
+                    hitTest.results[0].graphic
+                );
                 const attributes = hitTest.results[0].graphic.attributes;
                 app.utils.showResultInfo(app, attributes);
             }
@@ -167,7 +182,7 @@ export const addMapViewHandlers = (app) => {
 
         // Listen for the pointer-move event on the View
         view.on('pointer-move', (event) => {
-            if (!app.ui.pointerDown){
+            if (!app.ui.pointerDown) {
                 debouncedUpdate(event).catch((err) => {
                     if (!promiseUtils.isAbortError(err)) {
                         throw err;

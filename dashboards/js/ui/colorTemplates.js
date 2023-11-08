@@ -27,7 +27,7 @@ export const colorTemplates = {
         landColor: 'rgb(32, 32, 32)',
         lgaWithDashColor: 'rgb(128, 128, 128)',
         lgaNoDashColor: 'rgb(232, 232, 232)',
-        flowColor: 'rgb(48, 48, 48)',
+        flowColor: 'rgb(104, 104, 104)',
     },
     christmas: {
         color: 'rgb(0, 64, 0)',
