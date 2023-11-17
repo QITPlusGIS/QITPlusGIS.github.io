@@ -64,7 +64,10 @@ const addAdminBoundLayer = (app) => {
     // Unique value style if AB has dashboard url or not
     layer.renderer = {
         type: 'unique-value',
-        valueExpression: 'When(IsEmpty($feature.dash_url), 0, 1)',
+        valueExpression: `When(
+            !IsEmpty($feature.dash_url), 1,
+            !IsEmpty($feature.g_ims), 2,
+            0)`,
         uniqueValueInfos: [
             {
                 value: 1,
@@ -73,7 +76,22 @@ const addAdminBoundLayer = (app) => {
                     type: 'simple-fill',
                     color: app.utils.rgbToRgba(
                         app.colorTemplate.lgaWithDashColor,
-                        0.1
+                        0.2
+                    ),
+                    outline: {
+                        width: 1,
+                        color: app.colorTemplate.lgaWithDashColor,
+                    },
+                },
+            },
+            {
+                value: 2,
+                label: 'With Guardian IMS',
+                symbol: {
+                    type: 'simple-fill',
+                    color: app.utils.rgbToRgba(
+                        app.colorTemplate.lgaWithDashColor,
+                        0.05
                     ),
                     outline: {
                         width: 1,
@@ -105,7 +123,7 @@ const addAdminBoundLayer = (app) => {
     if (app.layerEffect) {
         layer.featureEffect = {
             filter: {
-                where: 'dash_url is not null',
+                where: 'dash_url is not null or g_ims is not null',
             },
             includedEffect: 'bloom(1, 0.1px, 0)',
             excludedEffect: 'opacity(30%) drop-shadow(0px, 0px, 3px, black)',
