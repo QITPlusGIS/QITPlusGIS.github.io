@@ -1,0 +1,334 @@
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>QIT FloodCAST Prototype</title>
+
+    <link rel="stylesheet" href="https://js.arcgis.com/4.30/esri/themes/light/main.css" />
+    <script src="https://js.arcgis.com/4.30/"></script>
+
+    <script>
+      require(["esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer", "esri/core/reactiveUtils"], (
+        Map,
+        MapView,
+        FeatureLayer,
+        reactiveUtils
+      ) => {
+        (async () => {
+          const map = new Map({
+            basemap: "dark-gray-vector"
+          });
+
+          const view = new MapView({
+            container: "sceneDiv",
+            map: map,
+            center: [146.8239537, -19.2569391], // Longitude, latitude townsville
+            zoom: 6,
+            padding: {
+              right: 300
+            }
+          });
+
+          const listNode = document.getElementById("floodareas");
+
+          /*****************************************************************
+         * Define symbols for each class break. will be on specified values
+         *****************************************************************/
+        let fillOpacity = 0.3;
+
+        const sym1 = {
+          type: "simple-fill", // autocasts as new SimpleFillSymbol()
+          color: [0, 0, 0, 0.5],
+          style: "solid",
+          outline: {
+            width: 1,
+            color: [50, 50, 50, 1]
+          }
+        };
+
+        const sym2 = {
+          type: "simple-fill", // autocasts as new SimpleFillSymbol()
+          color: [251, 224, 50, fillOpacity/3],
+          style: "solid",
+          outline: {
+            width: 1,
+            color: [251, 224, 50, 1]
+          }
+        };
+
+        const sym3 = {
+          type: "simple-fill", // autocasts as new SimpleFillSymbol()
+          color: [255, 121, 0, fillOpacity/2],
+          style: "solid",
+          outline: {
+            width: 1,
+            color: [255, 121, 0, 1]
+          }
+        };
+
+        const sym4 = {
+          type: "simple-fill", // autocasts as new SimpleFillSymbol()
+          color: [214, 0, 28, fillOpacity],
+          style: "solid",
+          outline: {
+            width: 1,
+            color: [214, 0, 28, 1]
+          }
+        };
+
+        /*****************************************************************
+         * Set each unique value directly in the renderer's constructor.
+         * At least one field must be used (in this case the "COL_DEG" field).
+         * The label property of each unique value will be used to indicate
+         * the field value and symbol in the legend.
+         *****************************************************************/
+
+		const renderer = {
+			  type: "class-breaks", // autocasts as new ClassBreaksRenderer()
+			  field: "LGA_code",
+			  //normalizationField: "EDUCBASECY",
+			  legendOptions: {
+				title: "Alert Level"
+			  },
+			  defaultSymbol: {
+				type: "simple-fill", // autocasts as new SimpleFillSymbol()
+				color: "black",
+				style: "backward-diagonal",
+				outline: {
+				  width: 0.5,
+				  color: [50, 50, 50, 0.6]
+				}
+			  },
+			  defaultLabel: "no data",
+			  classBreakInfos: [
+				{
+				  minValue: 0,
+				  maxValue: 4000,
+				  symbol: sym1,
+				  label: "No Event"
+				},
+				{
+				  minValue: 4000,
+				  maxValue: 5000,
+				  symbol: sym2,
+				  label: "Advice"
+				},
+				{
+				  minValue: 5000,
+				  maxValue: 6000,
+				  symbol: sym3,
+				  label: "Watch and Act"
+				},
+				{
+				  minValue: 6000,
+				  maxValue: 9999,
+				  symbol: sym4,
+				  label: "Emergency Alert"
+				}
+			  ]
+		  };
+       
+          
+		  const featureLayer = new FeatureLayer({
+            url: "https://services1.arcgis.com/vkTwD8kHw2woKBqV/ArcGIS/rest/services/Coastal_LGA_QLD/FeatureServer/0",
+            outFields: ["LGA_code", "LGA_Name", "OBJECTID"], // used by queryFeatures
+           	title: "Flood Warning Areas",
+		    refreshInterval: 1, // 1 minute
+            opacity: 1,
+			labelingInfo: null,
+			renderer: renderer
+          });
+		  
+		  featureLayer.orderBy = [{
+            field: "LGA_code",
+            order: "descending"  // "descending" | "ascending"
+          }];
+		  
+		  featureLayer.effect = "bloom(1.5, 0.5px, 0.1)";
+		  
+          map.add(featureLayer);
+
+          let graphics;
+
+          const layerView = await view.whenLayerView(featureLayer);
+
+          reactiveUtils.when(
+            () => !layerView.dataUpdating,
+            async () => {
+                // query all the features available for sidebar.
+                try {
+                  const featureSet = await layerView.queryFeatures({
+                    geometry: view.extent,
+                    returnGeometry: true,
+                    orderByFields: ["LGA_code"],
+					order: "descending"
+                  });
+
+                  graphics = featureSet.features;
+
+                  const fragment = document.createDocumentFragment();
+
+                  graphics.forEach((result, index) => {
+                    const attributes = result.attributes;
+                    const name = attributes.LGA_Name;
+
+                    // Create a list of LGA codes in qld
+                    const li = document.createElement("li");
+                    li.classList.add("panel-result");
+					
+					if (attributes.LGA_code < 2000)
+					{
+					 li.classList.add("no_alert");
+					}
+					if ((attributes.LGA_code >= 4000) && (attributes.LGA_code < 5000))
+					{
+					 li.classList.add("advice");
+					}
+					if ((attributes.LGA_code >= 5000) && (attributes.LGA_code < 6000))
+					{
+					 li.classList.add("watchandact");
+					}
+					if ((attributes.LGA_code >= 6000) && (attributes.LGA_code < 9999))
+					{
+					 li.classList.add("emergencywarning");
+					}
+					
+                    li.tabIndex = 0;
+                    li.setAttribute("data-result-id", index);
+                    li.textContent = name;
+
+                    fragment.appendChild(li);
+                  });
+                  // Empty the current list
+                  listNode.innerHTML = "";
+                  listNode.appendChild(fragment);
+                } catch (error) {
+                  console.error("query failed: ", error);
+                }
+            }
+          );
+          const onListClickHandler = async (event) => {
+            const target = event.target;
+            const resultId = target.getAttribute("data-result-id");
+
+            // get the graphic corresponding to the clicked zip code
+            const result = resultId && graphics && graphics[parseInt(resultId, 10)];
+
+            if (result) {
+              try {
+                await view.goTo(result.geometry.extent.expand(2));
+
+                /*view.openPopup({
+                  features: [result],
+                  location: result.geometry.centroid
+                }); */
+              } catch (error) {
+                if (error.name != "AbortError") {
+                  console.error(error);
+                }
+              }
+            }
+          };
+          // listen to click event on the zip code list
+          listNode.addEventListener("click", onListClickHandler);
+        })();
+      });
+    </script>
+
+    <style>
+      html,
+      body,
+      #sceneDiv {
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      .panel-container {
+        position: relative;
+        width: 100%;
+        height: 100%;
+      }
+
+      .panel-side {
+        padding: 2px;
+        box-sizing: border-box;
+        width: 450px;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        right: 0;
+        color: #fff;
+        background-color: rgba(0, 0, 0, 0.6);
+        overflow: auto;
+        z-index: 60;
+      }
+
+      .panel-side h3 {
+        padding: 0 20px;
+        margin: 20px 0;
+      }
+
+      .panel-side ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .panel-side li {
+		list-style: none;
+		padding: 5px 10px;
+		float: left;
+		width: 140px;
+		overflow: hidden;
+		border: 2px solid black;
+		height: 60px;
+      }
+
+      .panel-result {
+        cursor: pointer;
+        margin: 2px 0;
+        background-color: rgba(0, 0, 0, 0.3);
+      }
+
+      .panel-result:hover,
+      .panel-result:focus {
+        color: orange;
+        background-color: rgba(0, 0, 0, 0.75);
+      }
+	  
+	  .no_alert
+	  {
+		  color: white;
+	  }
+	  .advice {
+		  background-color: rgba(251, 224, 50, 1);
+		  color: black;
+	  }
+	  .watchandact {
+		  background-color: rgba(255, 121, 0, 1);
+		  color: black;
+	  }
+	  .emergencywarning {
+		  background-color: rgba(214, 0, 28, 1);
+		  color: white;
+	  }
+	  
+	  
+    </style>
+  </head>
+
+  <body>
+    <div class="panel-container">
+      <div class="panel-side esri-widget">
+        <h3>FloodCAST Areas</h3>
+        <ul id="floodareas">
+          <li>Loading&hellip;</li>
+        </ul>
+      </div>
+      <div id="sceneDiv"></div>
+    </div>
+  </body>
+</html>
