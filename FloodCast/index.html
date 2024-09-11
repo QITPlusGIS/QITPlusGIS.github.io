@@ -1,0 +1,428 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>QIT FloodCAST Prototype</title>
+
+    <link rel="stylesheet" href="https://js.arcgis.com/4.30/esri/themes/light/main.css" />
+    <script src="https://js.arcgis.com/4.30/"></script>
+	
+	<script type="module" src=https://js.arcgis.com/calcite-components/2.12.1/calcite.esm.js></script>
+    <link rel="stylesheet" type="text/css" href=https://js.arcgis.com/calcite-components/2.12.1/calcite.css />
+
+    <script>
+      require(["esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer", "esri/core/promiseUtils"], (
+        Map,
+        MapView,
+        FeatureLayer,
+        promiseUtils
+      ) => {
+        (async () => {
+          const map = new Map({
+            basemap: "gray-vector"
+          });
+
+          const view = new MapView({
+            container: "sceneDiv",
+            map: map, 
+            center: [153.348126845153, -27.98], // Longitude, latitude approx centre CoGC LGA
+            zoom: 9,
+            padding: {
+              right: 300
+            },
+			highlightOptions: {
+            color: "white"
+            }
+          });
+
+          const listNode = document.getElementById("floodareas");
+
+         /*****************************************************************
+         * Define symbols for each class break. will be on specified values
+         *****************************************************************/
+        /*let fillOpacity = 0.4;
+
+        const sym1 = {
+          type: "simple-fill", // autocasts as new SimpleFillSymbol()
+          color: [0, 0, 0, 0],
+          style: "solid",
+          outline: {
+            width: 1,
+            color: [250, 250, 250, 1]
+          }
+        };
+
+        const sym2 = {
+          type: "simple-fill", // autocasts as new SimpleFillSymbol()
+          color: [251, 224, 50, fillOpacity],
+          style: "solid",
+          outline: {
+            width: 1,
+            color: [251, 224, 50, 1]
+          }
+        };
+
+        const sym3 = {
+          type: "simple-fill", // autocasts as new SimpleFillSymbol()
+          color: [255, 121, 0, fillOpacity],
+          style: "solid",
+          outline: {
+            width: 1,
+            color: [255, 121, 0, 1]
+          }
+        };
+
+        const sym4 = {
+          type: "simple-fill", // autocasts as new SimpleFillSymbol()
+          color: [214, 0, 28, fillOpacity],
+          style: "solid",
+          outline: {
+            width: 1,
+            color: [214, 0, 28, 1]
+          }
+        };*/
+
+        /*****************************************************************
+         * The label property of each unique value will be used to indicate
+         * the field value and symbol in the legend. - not used
+         *****************************************************************/
+
+		/*const renderer = {
+			  type: "class-breaks", // autocasts as new ClassBreaksRenderer()
+			  field: "LGA_code",
+			  //normalizationField: "EDUCBASECY",
+			  legendOptions: {
+				title: "Alert Level"
+			  },
+			  defaultSymbol: {
+				type: "simple-fill", // autocasts as new SimpleFillSymbol()
+				color: "black",
+				style: "backward-diagonal",
+				outline: {
+				  width: 0.5,
+				  color: [200, 200, 200, 1]
+				}
+			  },
+			  defaultLabel: "no data",
+			  classBreakInfos: [
+				{
+				  minValue: 0,
+				  maxValue: 4000,
+				  symbol: sym1,
+				  label: "No Event"
+				},
+				{
+				  minValue: 4000,
+				  maxValue: 5000,
+				  symbol: sym2,
+				  label: "Advice"
+				},
+				{
+				  minValue: 5000,
+				  maxValue: 6000,
+				  symbol: sym3,
+				  label: "Watch and Act"
+				},
+				{
+				  minValue: 6000,
+				  maxValue: 9999,
+				  symbol: sym4,
+				  label: "Emergency Alert"
+				}
+			  ]
+		  };*/
+            
+		  const featureLayer = new FeatureLayer({
+            url: "https://services7.arcgis.com/si70weKpzPSa0BGV/arcgis/rest/services/CoGC_FWA/FeatureServer/0",
+            outFields: ["FWA_Status", "FWA_Link", "FWA_Name"], // used by queryFeatures
+           	title: "Flood Warning Areas",
+		    refreshInterval: 1, // 1 minute
+            opacity: 1,
+			labelingInfo: null,
+			//renderer: renderer
+          });
+		  
+		  /*featureLayer.orderBy = [{
+            field: "LGA_code",
+            order: "descending"  // "descending" | "ascending"
+          }];*/
+		  
+		  //featureLayer.effect = "bloom(1.5, 0.5px, 0.1)";
+		  
+          map.add(featureLayer);
+
+          let graphics; // used when creating list of features
+
+          const layerView = await view.whenLayerView(featureLayer);
+		  
+		 /* featureLayer.queryExtent({ where: 'FWA_Name is "Outside Flood Warning Area"' }).then((result) => {
+            layerView.goTo(
+            { target: result.extent.expand(1.1) },
+            { duration: 100 }		
+        );*/
+		
+		/* zoom to the extent of the source feature layer immediatly after load */
+		featureLayer
+		  .when(() => {
+			return featureLayer.queryExtent();
+			
+		  })
+		  .then((response) => {
+		  			view.goTo(response.extent.expand(0.9));
+		  });
+		  
+		  const opts = {
+             include: featureLayer
+         }
+  
+		// capture map click and open link if feature clicked
+		const debouncedClick = promiseUtils.debounce(async (event) => {
+            const hitTest = await view.hitTest(event, opts);
+            if (hitTest.results.length != 0) {
+                const attributes = hitTest.results[0].graphic.attributes;
+				//console.log(attributes);
+				if (attributes.FWA_Link) {
+				   window.open(attributes.FWA_Link, '_blank');		
+				}	
+            } 
+        });
+		
+		view.on('click', (event) => {
+            debouncedClick(event).catch((err) => {
+                if (!promiseUtils.isAbortError(err)) {
+                    throw err;
+                }
+            });
+        });
+
+		
+/* this was originally fired every time the map moved and querieied the local layerView, converted by adding outfields and where to query, slower to do two trips to server but gauranteed return all the warning areas, using the layerView risks missing features if the map for some reason is not the full extent when loaded
+          reactiveUtils.when(
+            () => !layerView.dataUpdating,
+            async () => {
+			*/
+                // query all the features available for sidebar.
+                try {
+                  const featureSet = await featureLayer.queryFeatures({
+                    //geometry: view.extent,
+					where: "FWA_Name <> 'Outside Flood Warning Area'",
+                    returnGeometry: true,
+					outFields: ["FWA_Status", "FWA_Link", "FWA_Name"],
+                    orderByFields: ["FWA_Status"],
+					order: "descending"
+                  });
+
+                  graphics = featureSet.features;
+                  //console.log(featureSet);
+                  const fragment = document.createDocumentFragment();
+
+                  graphics.forEach((result, index) => {
+                    const attributes = result.attributes;
+                    const name = attributes.FWA_Name;
+
+                    // Create a list of LGA codes in qld
+                    const li = document.createElement("li");
+                    li.classList.add("panel-result");
+										
+					if (attributes.FWA_Status == "Advice")
+					{
+					 li.classList.add("advice");
+					}
+					else if (attributes.FWA_Status == "WatchAndAct")
+					{
+					 li.classList.add("watchandact");
+					}
+					else if (attributes.FWA_Status == "EmergencyWarning")
+					{
+					 li.classList.add("emergencywarning");
+					}
+					else
+					{
+					 li.classList.add("no_alert");
+					}
+					
+					
+					li.classList.add("animate-fade-in","js-animation");
+                    li.tabIndex = 0;
+                    li.setAttribute("data-result-id", index);
+					if (attributes.FWA_Link)
+					{
+                        li.innerHTML = "<a href='" + attributes.FWA_Link + "' target='_blank'>" + name + "</a>";
+					}
+					else{
+					    li.innerHTML = "<a href='#unavailable-" + name + "' target='_self'>" + name + " (Link Unavailable)</a>";
+						console.error("Attribute FWA_Link not defined in feature for", name);
+					}
+										
+					fragment.appendChild(li);
+                  });
+                  // Empty the current list
+                  listNode.innerHTML = "";
+                  listNode.appendChild(fragment);
+                } catch (error) {
+                  console.error("layer query failed: ", error);
+                }
+        /*    }
+          ); */
+		  
+		  
+		  /*
+          const onListClickHandler = async (event) => {
+            const target = event.target;
+            const resultId = target.getAttribute("data-result-id");
+
+            // get the graphic corresponding to the clicked zip code
+            const result = resultId && graphics && graphics[parseInt(resultId, 10)];
+
+            if (result) {
+              try {
+                await view.goTo(result.geometry.extent.expand(2));
+
+                /*view.openPopup({
+                  features: [result],
+                  location: result.geometry.centroid
+                }); */ /*
+              } catch (error) {
+                if (error.name != "AbortError") {
+                  console.error(error);
+                }
+              }
+            }
+          };
+          // listen to click event on the zip code list
+          listNode.addEventListener("click", onListClickHandler);
+		  */
+		  
+		  
+        })();
+      });
+    </script>
+
+    <style>
+      html,
+      body,
+      #sceneDiv {
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      .panel-container {
+        position: relative;
+        width: 100%;
+        height: 100%;
+      }
+
+      .panel-side {
+        padding: 2px;
+        box-sizing: border-box;
+        width: 300px;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        right: 0;
+        color: #000;
+        background-color: rgba(255,255,255,0.4);
+        overflow: auto;
+        z-index: 60;
+        backdrop-filter: blur(1.5px);
+      }
+
+      .panel-side h3 {
+        padding: 0 5px;
+        margin: 20px 0;
+      }
+
+      .panel-side ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .panel-side li {
+		list-style: none;
+		float: left;
+		border: 2px solid black;
+		margin:3px;
+		align-content: center;
+        text-align: center;
+      }
+	  
+	  .panel-side li a{
+		color:inherit;
+		display:block;
+		text-decoration:none;
+		padding: 5px 10px;
+		width: 135px;
+		overflow: hidden;
+		height: 60px;
+		align-content: center;
+        text-align: center;
+
+      }
+
+      .panel-result {
+        cursor: pointer;
+        margin: 0;
+        background-color: rgba(0, 0, 0, 0.3);
+      }
+
+      .panel-result:hover,
+      .panel-result:focus {
+        color: orange;
+        background-color: rgba(0, 0, 0, 0.75);
+      }
+	  
+	  .no_alert
+	  {
+		  color: white;
+	  }
+	  .advice {
+		  background-color: rgba(251, 224, 50, 1);
+		  color: black;
+	  }
+	  .watchandact {
+		  background-color: rgba(255, 121, 0, 1);
+		  color: black;
+	  }
+	  .emergencywarning {
+		  background-color: rgba(214, 0, 28, 1);
+		  color: white;
+	  }
+	  
+	  .calcite-mode-light { 
+		--calcite-alert-width: 400px;
+		}
+	  
+    </style>
+  </head>
+
+  <body>
+    <div class="panel-container">
+      <div class="panel-side esri-widget">
+        <h3>Flood Warning Areas</h3>
+        <ul id="floodareas">
+          <li style="border:none">Loading&hellip;</li>
+        </ul>
+		
+		<div style="clear:both; margin-top:500px; padding-top:10px; border-top:1px solid silver;">
+			Todo list:
+			<ul>
+			<li>Responsive/tablet breakpoint</li>
+			<li>Style buttons when ~number FWA known</li>
+			<li>Geolocation - needs https</li>
+			<li>⬇️ Hover style and tooltip</li>
+			</ul>
+		</div>
+		
+      </div>
+      <div id="sceneDiv"></div>
+	  
+	  <calcite-alert icon="chart-magnifying-glass" kind="info" open auto-close autoCloseDuration="fast" placement="top" label="Flood Warning Areas">
+	  <div slot="title">Flood Warning Areas </div>
+      <div slot="message">Select an area to view details</div>
+    </calcite-alert>
+    </div>
+  </body>
+</html>
