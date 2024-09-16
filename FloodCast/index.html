@@ -11,11 +11,18 @@
     <link rel="stylesheet" type="text/css" href=https://js.arcgis.com/calcite-components/2.12.1/calcite.css />
 
     <script>
-      require(["esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer", "esri/core/promiseUtils"], (
+	  /* IMPORTANT THIS IS PROTOTYPE CODE - It is not intended for deployment without significant restructuring and tidying
+	  **
+	  ** 10 Sep 2024 Stephen Gibson QIT PLUS GIS
+	  */
+	  
+      require(["esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer", "esri/core/promiseUtils", "esri/widgets/Locate", "esri/Graphic"], (
         Map,
         MapView,
         FeatureLayer,
-        promiseUtils
+        promiseUtils,
+		Locate,
+		Graphic
       ) => {
         (async () => {
           const map = new Map({
@@ -293,6 +300,15 @@
           listNode.addEventListener("click", onListClickHandler);
 		  */
 		  
+		  let locateWidget = new Locate({
+			  view: view,   // Attaches the Locate button to the view
+			  graphic: new Graphic({
+				symbol: { type: "simple-marker" }  // overwrites the default symbol used for the
+				// graphic placed at the location of the user when found
+			  })
+			});
+
+            view.ui.add(locateWidget, "top-left");
 		  
         })();
       });
@@ -411,7 +427,6 @@
 			<ul>
 			<li>Responsive/tablet breakpoint</li>
 			<li>Style buttons when ~number FWA known</li>
-			<li>Geolocation - needs https</li>
 			<li>⬇️ Hover style and tooltip</li>
 			</ul>
 		</div>
