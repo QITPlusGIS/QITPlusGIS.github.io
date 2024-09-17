@@ -12,7 +12,7 @@
 
     <script>
 	  /* IMPORTANT THIS IS PROTOTYPE CODE - It is not intended for deployment without significant restructuring and tidying
-	  **
+	  ** especially building with EMS instead of AMD
 	  ** 10 Sep 2024 Stephen Gibson QIT PLUS GIS
 	  */
 	  
@@ -34,9 +34,9 @@
             map: map, 
             center: [153.348126845153, -27.98], // Longitude, latitude approx centre CoGC LGA
             zoom: 9,
-            padding: {
+            /*padding: {
               right: 300
-            },
+            },*/
 			highlightOptions: {
             color: "white"
             }
@@ -143,7 +143,7 @@
             url: "https://services7.arcgis.com/si70weKpzPSa0BGV/arcgis/rest/services/CoGC_FWA/FeatureServer/0",
             outFields: ["FWA_Status", "FWA_Link", "FWA_Name"], // used by queryFeatures
            	title: "Flood Warning Areas",
-		    refreshInterval: 1, // 1 minute
+		    refreshInterval: 3, // 1 = minute
             opacity: 1,
 			labelingInfo: null,
 			//renderer: renderer
@@ -203,8 +203,8 @@
         });
 
 		
-/* this was originally fired every time the map moved and querieied the local layerView, converted by adding outfields and where to query, slower to do two trips to server but gauranteed return all the warning areas, using the layerView risks missing features if the map for some reason is not the full extent when loaded
-          reactiveUtils.when(
+		/* this was originally fired every time the map moved and querieied the local layerView, converted by adding outfields and where to query, slower to do two trips to server but gauranteed return all the warning areas, using the layerView risks missing features if the map for some reason is not the full extent when loaded
+		reactiveUtils.when(
             () => !layerView.dataUpdating,
             async () => {
 			*/
@@ -223,11 +223,11 @@
                   //console.log(featureSet);
                   const fragment = document.createDocumentFragment();
 
-                  graphics.forEach((result, index) => {
+                  graphics.forEach((result, index) => { // for each FWA
                     const attributes = result.attributes;
                     const name = attributes.FWA_Name;
 
-                    // Create a list of LGA codes in qld
+                    // Create a list item for each of FWA
                     const li = document.createElement("li");
                     li.classList.add("panel-result");
 										
@@ -300,18 +300,20 @@
           listNode.addEventListener("click", onListClickHandler);
 		  */
 		  
-		  let locateWidget = new Locate({
+		let locateWidget = new Locate({
 			  view: view,   // Attaches the Locate button to the view
 			  graphic: new Graphic({
 				symbol: { type: "simple-marker" }  // overwrites the default symbol used for the
 				// graphic placed at the location of the user when found
 			  })
-			});
+		});
 
-            view.ui.add(locateWidget, "top-left");
+        view.ui.add(locateWidget, "top-left");
 		  
-        })();
-      });
+		  
+		  // icon for reset location esri-icon-zoom-out-fixed or esri-icon-home 
+      })();
+    });
     </script>
 
     <style>
@@ -375,7 +377,6 @@
 		height: 60px;
 		align-content: center;
         text-align: center;
-
       }
 
       .panel-result {
@@ -409,14 +410,30 @@
 	  
 	  .calcite-mode-light { 
 		--calcite-alert-width: 400px;
+	  }
+	  
+	  @media only screen and (orientation: portrait) {
+		.panel-container {
+			display: flex;
+			flex-direction: column-reverse;
 		}
+		#sceneDiv {
+			height: 50%;
+			width: 100%;
+		}
+		#sidebar {
+			height: 50%;
+			width: 100%;
+			position:relative;
+		}
+}
 	  
     </style>
   </head>
 
   <body>
     <div class="panel-container">
-      <div class="panel-side esri-widget">
+      <div class="panel-side esri-widget" id="sidebar">
         <h3>Flood Warning Areas</h3>
         <ul id="floodareas">
           <li style="border:none">Loading&hellip;</li>
@@ -425,9 +442,9 @@
 		<div style="clear:both; margin-top:500px; padding-top:10px; border-top:1px solid silver;">
 			Todo list:
 			<ul>
-			<li>Responsive/tablet breakpoint</li>
-			<li>Style buttons when ~number FWA known</li>
-			<li>⬇️ Hover style and tooltip</li>
+				<li>Style buttons when ~number FWA known</li>
+				<li>⬇️ Hover style and tooltip</li>
+				<li>⬇️ Home (reset zoom / location) button</li>	
 			</ul>
 		</div>
 		
