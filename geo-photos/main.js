@@ -92,8 +92,8 @@ require([
                                 symbol: {
                                     type: 'picture-marker',
                                     url: circularThumbnail,
-                                    width: '60px',
-                                    height: '60px',
+                                    width: '50px',
+                                    height: '50px',
                                 },
                             });
                         } catch (error) {
