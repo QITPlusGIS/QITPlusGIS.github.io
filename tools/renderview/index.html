@@ -36,7 +36,8 @@
 		<p>Internal use only<p>
         <p>
 			<label>
-			   URL of tile feature server e.g. https://services7.arcgis.com/si70weKpzPSa0BGV/arcgis/rest/services/EGSC_LIMP_Localities/FeatureServer/0 <br/> https://services1.arcgis.com/vkTwD8kHw2woKBqV/ArcGIS/rest/services/Severe_Weather_Flood_Cyclone_Warning_Point_Pubic/FeatureServer/0 <br/>
+			   URL of tile feature server e.g. https://services7.arcgis.com/si70weKpzPSa0BGV/arcgis/rest/services/EGSC_LIMP_Localities/FeatureServer/0 simple renderer<br/> https://services1.arcgis.com/vkTwD8kHw2woKBqV/ArcGIS/rest/services/Severe_Weather_Flood_Cyclone_Warning_Point_Pubic/FeatureServer/0 <br/>
+			   https://services7.arcgis.com/si70weKpzPSa0BGV/arcgis/rest/services/Powercor_Outages/FeatureServer/1 default symbol</br>
 			   <input id="apipath" oninput="keyHandler()" type="text" size="150" value="https://services1.arcgis.com/vkTwD8kHw2woKBqV/ArcGIS/rest/services/Severe_Weather_Flood_Cyclone_Warning_Point_Pubic/FeatureServer/0"> 
 			</label>
 			<button onclick="getJson()">Process</button>
@@ -70,12 +71,19 @@
 		  }
 		});
 		
-		function renderJson(json, apipath)
+		function renderJson(json, apipath, jsonrenderer)
 		{		
 			//console.log(json);
 		
 			// - extract legend data into an array of legend objects
-			let legendList = [];	
+			let legendList = [];
+
+			if (jsonrenderer.defaultSymbol?.contentType)
+			{
+			   document.getElementById("messages").innerHTML += "<br/>Has Default Symbol";
+			   legendList.push({name : jsonrenderer.defaultLabel, type : jsonrenderer.defaultSymbol.contentType, data : jsonrenderer.defaultSymbol.imageData});
+			}
+			
 			json.forEach((item) => {
 				// name can use name : item.value or name : item.label, for a simple feature only item.type is populated
 				let legendItem = {};
@@ -112,7 +120,7 @@
 			else // **assume** many symbols
 				renderJson(json.renderer.uniqueValueInfos,apipath); */
 			
-			(json.renderer.symbol) ? renderJson([json.renderer],apipath) : renderJson(json.renderer.uniqueValueInfos,apipath) ;
+			(json.renderer.symbol) ? renderJson([json.renderer],apipath,json.renderer) : renderJson(json.renderer.uniqueValueInfos,apipath, json.renderer) ;
 		};
 
         function getJson() {
