@@ -1,0 +1,1 @@
+import{I as o,d as t}from"./icon-Brw-LuzR.js";import"./jsxFactory-CrT0-KGb.js";import"./uuid-De2V3pkO.js";import"./index-OAJD89tD.js";import"./observers-roHLtE_H.js";const p=o,s=t;export{p as CalciteIcon,s as defineCustomElement};

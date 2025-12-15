@@ -1,0 +1,1 @@
+import{L as e,d as o}from"./loader-CBTBLw00.js";import"./jsxFactory-CrT0-KGb.js";import"./uuid-De2V3pkO.js";import"./index-OAJD89tD.js";const n=e,s=o;export{n as CalciteLoader,s as defineCustomElement};

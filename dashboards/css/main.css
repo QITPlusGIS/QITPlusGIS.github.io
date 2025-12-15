@@ -42,7 +42,10 @@ body {
     font-size: 16px;
     z-index: 1;
     display: none;
+
+    -webkit-user-select: none;
     user-select: none;
+
     color: var(--color);
     background-color: color-mix(
         in srgb,
@@ -52,6 +55,7 @@ body {
     padding: 10px;
     border: 1px solid var(--color);
 }
+
 svg {
     fill: var(--color);
     height: 24px;

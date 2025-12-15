@@ -171,12 +171,32 @@ export const addMapViewHandlers = (app) => {
                 app.utils.resetSearchPanel(app);
                 if (app.highlightSelect) app.highlightSelect.remove();
             } else {
+                const sg = app.showHasGuardian;
                 if (app.highlightSelect) app.highlightSelect.remove();
                 app.highlightSelect = app.mainLayerView.highlight(
                     hitTest.results[0].graphic
                 );
                 const attributes = hitTest.results[0].graphic.attributes;
-                app.utils.showResultInfo(app, attributes);
+                if (sg) {
+                    app.utils.showResultInfo(app, attributes);
+                } else {
+                    const url = attributes.dash_url;
+
+                    if (typeof url === 'string') {
+                        try {
+                            const parsed = new URL(url);
+
+                            if (
+                                parsed.protocol === 'http:' ||
+                                parsed.protocol === 'https:'
+                            ) {
+                                window.open(parsed.href, '_blank', 'noopener');
+                            }
+                        } catch {
+                            // invalid URL → do nothing
+                        }
+                    }
+                }
             }
         });
 

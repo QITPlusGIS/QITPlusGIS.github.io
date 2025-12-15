@@ -35,6 +35,7 @@ export const adjustAppByURLParams = (app) => {
     if (urlParams.has('sh')) app.showHeader = Number(urlParams.get('sh')) ? true : false;
     if (urlParams.has('ssp')) app.showSearchPanel = Number(urlParams.get('ssp')) ? true : false;
     if (urlParams.has('sf')) app.showFlow = Number(urlParams.get('sf')) ? true : false;
+    if (urlParams.has('sg')) app.showHasGuardian = Number(urlParams.get('sg')) ? true : false;
     if (urlParams.has('le')) app.layerEffect = Number(urlParams.get('le')) ? true : false;
     app.colorTemplate = colorTemplates[app.colorTemplateLabel];
     if (urlParams.has('ct')){

@@ -35,10 +35,7 @@ const getInfoButton = (app, f) => {
         app.utils.showResultInfo(app, f.attributes);
         if (app.highlightSelect) app.highlightSelect.remove();
         app.highlightSelect = app.mainLayerView.highlight(f);
-        app.mapView.goTo(
-            f.geometry.extent.expand(2),
-            {duration: 1000}
-        );
+        app.mapView.goTo(f.geometry.extent.expand(2), { duration: 1000 });
     });
     return button;
 };
@@ -56,22 +53,38 @@ const getDashboardButton = (app, url) => {
 const populateDashboardsList = (app) => {
     // Populate dashboard list with features
     const layer = app.layers.ab;
+    const sg = app.showHasGuardian;
     const query = layer.createQuery();
     query.where = "dash_url <> '' and dash_url is not null";
     query.outFields = ['*'];
     query.orderByFields = ['name'];
 
-    layer.queryFeatures(query).then(function (response) {
+    layer.queryFeatures(query).then((response) => {
         const dashboardsList = document.createElement('ul');
         for (const f of response.features) {
             const url = f.attributes.dash_url;
             const name = f.attributes.name + ', ' + f.attributes.state;
-            const infoButton = getInfoButton(app, f);
-            const dashboardButton = getDashboardButton(app, url);
             const dashboardsItem = document.createElement('li');
-            dashboardsItem.appendChild(infoButton);
-            dashboardsItem.appendChild(dashboardButton);
-            dashboardsItem.appendChild(document.createTextNode(name));
+            if (sg) {
+                const infoButton = getInfoButton(app, f);
+                dashboardsItem.appendChild(infoButton);
+
+                const dashboardButton = getDashboardButton(app, url);
+                dashboardsItem.appendChild(dashboardButton);
+
+                dashboardsItem.appendChild(document.createTextNode(name));
+            } else {
+                const dashboardButton = getDashboardButton(app, url);
+                dashboardsItem.appendChild(dashboardButton);
+                const link = document.createElement('a');
+                link.href = url;
+                link.target = '_blank';
+                link.rel = 'noopener';
+                link.textContent = name;
+
+                dashboardsItem.appendChild(link);
+            }
+
             dashboardsList.appendChild(dashboardsItem);
         }
         app.dashboardsList = dashboardsList;
@@ -97,15 +110,41 @@ const getSearchWidget = (app) => {
         container: 'searchContainer',
     });
     widget.goToOverride = (view, goToParams) => {
-        const attributes = goToParams.target.target.attributes;        
-        app.utils.showResultInfo(app, attributes);
+        const attributes = goToParams.target.target.attributes;
+        const sg = app.showHasGuardian;
+        if (sg) {
+            app.utils.showResultInfo(app, attributes);
+        }
         if (app.highlightSelect) app.highlightSelect.remove();
-        app.highlightSelect = app.mainLayerView.highlight(goToParams.target.target);
-        goToParams.options.duration = 1000;
-        return view.goTo(
-            goToParams.target.target.geometry.extent.expand(2),
-            goToParams.options
+        app.highlightSelect = app.mainLayerView.highlight(
+            goToParams.target.target
         );
+        goToParams.options.duration = 1000;
+        return view
+            .goTo(
+                goToParams.target.target.geometry.extent.expand(2),
+                goToParams.options
+            )
+            .then(() => {
+                if (!sg) {
+                    const url = attributes.dash_url;
+
+                    if (typeof url === 'string') {
+                        try {
+                            const parsed = new URL(url);
+
+                            if (
+                                parsed.protocol === 'http:' ||
+                                parsed.protocol === 'https:'
+                            ) {
+                                window.open(parsed.href, '_blank', 'noopener');
+                            }
+                        } catch {
+                            // invalid URL → do nothing
+                        }
+                    }
+                }
+            });
     };
 
     widget.on('select-result', (result) => {
@@ -123,7 +162,7 @@ const setSearchWidget = (app) => {
             searchFields: ['name'],
             suggestionTemplate: '{name}, {state}',
             exactMatch: false,
-            outFields: ['name', 'state','dash_url', 'g_ims'],
+            outFields: ['name', 'state', 'dash_url', 'g_ims'],
             prefix: '%',
             postfix: '%',
             name: 'LGA Name',
@@ -132,7 +171,7 @@ const setSearchWidget = (app) => {
             minSuggestCharacters: 1,
         },
     ];
-    app.widgets.search.when(()=> {
+    app.widgets.search.when(() => {
         // Focus search input only if header exists
         if (app.showHeader) app.widgets.search.focus();
     });

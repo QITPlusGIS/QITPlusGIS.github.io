@@ -1,0 +1,1 @@
+import{l as a,cr as p,o as i}from"./uuid-De2V3pkO.js";function s(o){if(a.apiKey&&p(o.portal.url))throw new i("save-api-key-utils:api-key-not-supported",`Saving is not supported on ${o.portal.url} when using an api key`)}export{s as i};

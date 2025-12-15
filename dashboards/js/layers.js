@@ -62,12 +62,18 @@ const addAdminBoundLayer = (app) => {
     });
 
     // Unique value style if AB has dashboard url or not
-    layer.renderer = {
-        type: 'unique-value',
-        valueExpression: `When(
+    const valueExpression = app.showHasGuardian
+        ? `When(
             !IsEmpty($feature.dash_url), 1,
             !IsEmpty($feature.g_ims), 2,
-            0)`,
+            0)`
+        : `When(
+            !IsEmpty($feature.dash_url), 1,
+            0)`;
+
+    layer.renderer = {
+        type: 'unique-value',
+        valueExpression: valueExpression,
         uniqueValueInfos: [
             {
                 value: 1,
@@ -121,9 +127,12 @@ const addAdminBoundLayer = (app) => {
 
     // Add effect based on dash_url
     if (app.layerEffect) {
+        const where = app.showHasGuardian
+            ? 'dash_url is not null or g_ims is not null'
+            : 'dash_url is not null';
         layer.featureEffect = {
             filter: {
-                where: 'dash_url is not null or g_ims is not null',
+                where: where,
             },
             includedEffect: 'bloom(1, 0.1px, 0)',
             excludedEffect: 'opacity(30%) drop-shadow(0px, 0px, 3px, black)',

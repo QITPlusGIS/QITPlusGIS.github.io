@@ -61,6 +61,7 @@ const app = {
     showFlow: true,
     layerEffect: true,
     colorTemplateLabel: 'default',
+    showHasGuardian: false,
     colorTemplate: {},
 };
 

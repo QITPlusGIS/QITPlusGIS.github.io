@@ -1,0 +1,1 @@
+import{N as a,bD as r,d as n,bE as t,bF as c,bG as f,bH as w,bI as m}from"./uuid-De2V3pkO.js";const p=new a(w),b=new a(c),o=new a(f);new a(m);function $(s){return s&&(r(s)||n(s,b))?b:s&&(t(s)||n(s,o))?o:p}export{$ as c};

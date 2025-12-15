@@ -24,3 +24,6 @@ To turn layer effect off set le=0
 
 ## Show flow - sf
 This feature shows flow of ocean currents. To turn flow off set sf=0
+
+## Show Has Guardian IMS - sg
+Default behaviour was changed on 15/12/2025 to simplified version linking only to dashboards. To show info including Has Guardian IMS se sg=1.
