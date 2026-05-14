@@ -39,9 +39,9 @@
             document.getElementById("messages").innerHTML += "<br/>Title = " + title;
 
             let xcoords = xmlDoc.getElementsByTagName("ows:WGS84BoundingBox")[0];
-            let easting = xcoords.getElementsByTagName("ows:LowerCorner")[0].innerHTML.split(' ')[0];
+            let westing = xcoords.getElementsByTagName("ows:LowerCorner")[0].innerHTML.split(' ')[0];
             let southing = xcoords.getElementsByTagName("ows:LowerCorner")[0].innerHTML.split(' ')[1];
-            let westing = xcoords.getElementsByTagName("ows:UpperCorner")[0].innerHTML.split(' ')[0];
+            let easting = xcoords.getElementsByTagName("ows:UpperCorner")[0].innerHTML.split(' ')[0];
             let northing = xcoords.getElementsByTagName("ows:UpperCorner")[0].innerHTML.split(' ')[1];
             document.getElementById("messages").innerHTML += "<br/>Northing = " + northing;
             document.getElementById("messages").innerHTML += "<br/>Easting = " + easting;
@@ -57,7 +57,7 @@
             // output 'all the things' into a template and apply it to textarea 
             document.getElementById("output").value = `new L.esri.tiledMapLayer({
     url: "${apipath}",
-    bounds: [[${northing}, ${easting}], [${southing}, ${westing}]],
+    bounds: [[${northing}, ${westing}], [${southing}, ${easting}]],
     minZoom: ${minlayer},
     maxNativeZoom: ${maxlayer},
     format: 'image/png',
