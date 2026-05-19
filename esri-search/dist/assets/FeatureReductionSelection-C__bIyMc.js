@@ -1,0 +1,1 @@
+import{Mx as e,N_ as t,P_ as n,tv as r}from"./index-g2z7tZmX.js";var i,a=i=class extends r{constructor(e){super(e),this.type=`selection`}clone(){return new i}};e([t({type:[`selection`],readOnly:!0,json:{write:!0}})],a.prototype,`type`,void 0),a=i=e([n(`esri.layers.support.FeatureReductionSelection`)],a);export{a as t};

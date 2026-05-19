@@ -1,0 +1,1 @@
+import{Jh as e}from"./index-g2z7tZmX.js";function t(t,n){return t===null?n:new e({url:t.field(`url`)})}export{t};

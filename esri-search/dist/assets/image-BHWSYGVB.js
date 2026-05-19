@@ -1,0 +1,1 @@
+import{yy as e}from"./index-g2z7tZmX.js";async function t(t,n){return(await e(t,{responseType:`image`,...n})).data}export{t};

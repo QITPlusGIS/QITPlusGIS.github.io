@@ -1,0 +1,1 @@
+import{jS as e}from"./index-g2z7tZmX.js";function t(){return e(`curve-densification-coarse-segments`)}function n(){return e(`curve-densification-max-segments`)}function r(){return e(`curve-densification-min-segments`)}function i(){return e(`curve-densification-pixel-deviation`)}export{i,r as n,t as r,n as t};

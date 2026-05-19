@@ -1,0 +1,1 @@
+import"./index-g2z7tZmX.js";import"./apiConverter-DyAVCGwc.js";import"./operatorGeneralize-B2A2S4eb.js";import{i as e,n as t,r as n}from"./generalizeOperator-DY-fV_Ne.js";export{e as execute,t as executeMany,n as supportsCurves};

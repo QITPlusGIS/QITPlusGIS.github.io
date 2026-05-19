@@ -1,0 +1,1 @@
+import"./index-g2z7tZmX.js";function e(e){return e?.name??`default`}export{e as t};

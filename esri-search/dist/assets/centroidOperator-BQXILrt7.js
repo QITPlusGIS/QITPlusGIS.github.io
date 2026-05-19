@@ -1,0 +1,1 @@
+import"./apiConverter-DyAVCGwc.js";import{n as e,t}from"./centroidOperator-Damkx-4T.js";export{e as execute,t as supportsCurves};
