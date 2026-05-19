@@ -1,1 +1,0 @@
-import"./index-g2z7tZmX.js";function e(e){return e===`l`?`m`:`s`}async function t(e){await e.componentOnReady(),await e.updateComplete}export{e as n,t};

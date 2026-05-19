@@ -1,0 +1,1 @@
+import"./glsl-DR5qAdui.js";import"./ShaderBuilder-DZEqsQYk.js";import"./VertexColor.glsl-ewiTSNA6.js";import{t as e}from"./SlicePlaneMaterial.glsl-BUQh83Y9.js";export{e as build};

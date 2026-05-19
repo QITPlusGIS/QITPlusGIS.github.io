@@ -1,0 +1,1 @@
+import"./index-CdfIpVZ2.js";function e(e){return e===`l`?`m`:`s`}async function t(e){await e.componentOnReady(),await e.updateComplete}export{e as n,t};

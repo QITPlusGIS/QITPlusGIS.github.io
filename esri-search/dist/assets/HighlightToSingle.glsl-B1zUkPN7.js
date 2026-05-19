@@ -1,1 +1,0 @@
-import"./glsl-DR5qAdui.js";import"./ShaderBuilder-DFzFcxY_.js";import"./VertexColor.glsl-CCcyNZUz.js";import{u as e}from"./ColorMaterial-CVGL-m9H.js";export{e as build};

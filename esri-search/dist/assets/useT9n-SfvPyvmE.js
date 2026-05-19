@@ -1,0 +1,1 @@
+import{w as e}from"./index-CdfIpVZ2.js";import{r as t}from"./controllers-TWh-H9ho.js";var n=t(e);export{n as t};

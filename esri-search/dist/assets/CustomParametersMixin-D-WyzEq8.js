@@ -1,1 +1,0 @@
-import{Mx as e,N_ as t,P_ as n}from"./index-g2z7tZmX.js";var r=r=>{let i=r,a=class extends i{constructor(){super(...arguments),this.customParameters=null}};return e([t({type:Object,json:{write:{overridePolicy:e=>({enabled:!!(e&&Object.keys(e).length>0)})}}})],a.prototype,`customParameters`,void 0),a=e([n(`esri.layers.mixins.CustomParametersMixin`)],a),a};export{r as t};

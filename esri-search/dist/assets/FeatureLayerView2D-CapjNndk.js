@@ -1,1 +1,0 @@
-import{Mx as e,P_ as t}from"./index-g2z7tZmX.js";import{n,t as r}from"./FeatureLikeLayerView-GSAquhEl.js";var i=class extends r{constructor(){super(...arguments),this.layer=null}},a=class extends n(i){};a=e([t(`esri.views.2d.layers.FeatureLayerView2D`)],a);var o=a;export{o as default};

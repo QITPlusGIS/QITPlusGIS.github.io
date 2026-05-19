@@ -1,0 +1,1 @@
+import"./index-CdfIpVZ2.js";import{a as e,i as t,r as n,t as r}from"./geodeticAreaOperator-BGVaQUju.js";export{n as execute,r as isLoaded,t as load,e as supportsCurves};

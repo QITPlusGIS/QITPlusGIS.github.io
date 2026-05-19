@@ -1,0 +1,1 @@
+import"./index-CdfIpVZ2.js";import"./apiConverter-BO0LDPOe.js";import{n as e,t}from"./areaOperator-B2AV1-Ei.js";export{t as execute,e as supportsCurves};

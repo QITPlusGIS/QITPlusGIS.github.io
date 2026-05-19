@@ -1,1 +1,0 @@
-import"./index-g2z7tZmX.js";import"./glsl-DR5qAdui.js";import"./ShaderBuilder-DFzFcxY_.js";import"./VertexColor.glsl-CCcyNZUz.js";import{c as e,s as t}from"./ColorMaterial-CVGL-m9H.js";export{t as TexturePassParameters,e as build};

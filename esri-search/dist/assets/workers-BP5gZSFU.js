@@ -1,1 +1,0 @@
-import{Ic as e}from"./index-g2z7tZmX.js";var t=e;export{t};

@@ -1,0 +1,1 @@
+import{Ic as e}from"./index-CdfIpVZ2.js";var t=e;export{t};

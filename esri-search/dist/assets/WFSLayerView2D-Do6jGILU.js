@@ -1,0 +1,1 @@
+import{Mx as e,P_ as t}from"./index-CdfIpVZ2.js";import{n,t as r}from"./FeatureLikeLayerView-BZnK7TTE.js";var i=class extends r{constructor(){super(...arguments),this.layer=null}},a=class extends n(i){};a=e([t(`esri.views.2d.layers.WFSLayerView2D`)],a);var o=a;export{o as default};
