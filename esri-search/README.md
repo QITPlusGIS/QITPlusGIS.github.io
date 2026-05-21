@@ -1,9 +1,11 @@
 # ArcGIS Search Test App
 
-A minimal React app demonstrating the ArcGIS JavaScript SDK (`@arcgis/core`) and the ArcGIS Search API. The app renders a full-screen map and provides two search boxes in the top-right:
+A minimal React app demonstrating the ArcGIS JavaScript SDK (`@arcgis/core`) and the ArcGIS Search API. The app renders a full-screen map and provides four search examples in the top-right:
 
 - Global search (default ArcGIS search sources)
 - Australia-only search (sends `countryCode=AU` to the ArcGIS World Geocoding service)
+- Whitsundays-only search (limits results to a fixed extent)
+- Australia-within-view search (restricts results to the visible map area)
 
 Implementation details
 - Main map and widgets: `src/App.tsx`
